@@ -1,0 +1,8 @@
+http://localhost:4000/accounts/register
+http://localhost:4000/accounts/verify-email
+http://localhost:4000/accounts/authenticate
+
+1-Authorize com o token obtido
+
+2- Consulta apenas o próprio usuário:
+http://localhost:4000/accounts/624c968120f0c4c6c920c966
