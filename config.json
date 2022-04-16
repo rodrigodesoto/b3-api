@@ -1,5 +1,5 @@
 ﻿{
-    "connectionString": "mongodb://localhost/b3-api",
+    "connectionString": "mongodb+srv://Soto:Mongo77*@clusterapi.so1qf.mongodb.net/b3DataBase?retryWrites=true&w=majority",
     "secret": "b3secretjwt",
     "emailFrom": "info@b3-api.com",
     "smtpOptions": {
