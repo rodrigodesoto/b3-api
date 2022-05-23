@@ -1,6 +1,6 @@
 {
     "name": "b3-api",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "NodeJS + MongoDB API for Email Sign Up with Verification, Authentication & Forgot Password",
     "license": "MIT",
     "repository": {
