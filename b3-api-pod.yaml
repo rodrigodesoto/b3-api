@@ -2,11 +2,12 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: b3-api-pod
-  labels: b3-api
+  labels: 
+    app: b3-api
 spec:
   containers:
     - name: b3-api-containers
-      image: us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:v3
+      image: us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:3
       ports:
       - name: b3-port
         containerPort: 4000
