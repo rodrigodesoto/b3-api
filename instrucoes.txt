@@ -15,10 +15,12 @@ http://localhost:4000/accounts/624c968120f0c4c6c920c966
 
 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
 
+
+Gerar package-lock.json:
+npm install
+
 git clone https://github.com/rodrigodesoto/b3-api
 cd rodrigodesoto9/b3-api 
-
-docker build -t REGION-docker.pkg.dev/${PROJECT_ID}/hello-repo/hello-app:v1 .
 docker build -t us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:v1 .
 docker run --rm -d -p 4000:4000 --name b3-api us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:v1
 
@@ -35,3 +37,16 @@ kubectl create deployment b3-api --image=us-west1-docker.pkg.dev/projeto-estudos
 kubectl scale deployment b3-api --replicas=3
 kubectl autoscale deployment b3-api --cpu-percent=80 --min=1 --max=5
 kubectl expose deployment b3-api --name=b3-api-service --type=LoadBalancer --port 80 --target-port 4000
+docker tag soto77/b3-api soto77/b3-api:v2
+docker push soto77/b3-api:v2
+docker build -t us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:v2 .
+docker push us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:v2
+kubectl set image deployment/b3-api b3-api=us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:v2
+watch kubectl get pods
+
+
+
+
+curl -X 'GET' \
+  'http://35.197.55.23/accounts/5eb12e197e06a76ccdefc121' \
+  -H 'accept: application/json'
