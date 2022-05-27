@@ -44,6 +44,19 @@ docker push us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:v2
 kubectl set image deployment/b3-api b3-api=us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:v2
 watch kubectl get pods
 
+--Montar a imagem:
+docker build -t soto77/b3-api:4 .
+--Enviar a imagem para o Docker Hub:
+docker push soto77/b3-api:4
+--Acessar o Cloud Shell e dar um pull das alterações:
+rodrigodesoto9@cloudshell:~/b3-api (b3-api-346602)$ git pull
+--Enviar a imagem para o Artifact Registry:
+docker build -t us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:4 .
+docker push us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:4
+
+kubectl apply -f b3-api-service.yaml
+kubectl apply -f b3-api-pod.yaml
+
 
 
 
