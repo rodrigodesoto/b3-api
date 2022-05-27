@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
     - name: b3-api-containers
-      image: us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api:3
+      image: us-west1-docker.pkg.dev/projeto-estudos-344512/hello-repo/b3-api
       ports:
       - name: b3-port
         containerPort: 4000
