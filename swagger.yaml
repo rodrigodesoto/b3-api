@@ -9,6 +9,8 @@ servers:
     description: Local development server
   - url: http://34.127.125.218:4000
     description: Cloud server
+  - url: http://b3-port:4000
+    description: Cloud server b3-port
 
 paths:
   /accounts/authenticate:
