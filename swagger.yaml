@@ -7,9 +7,15 @@ info:
 servers:
   - url: http://localhost:4000
     description: Local development server
-  - url: http://34.127.125.218:4000
-    description: Cloud server
+  - url: https://localhost:4000
+    description: Local development server
+  - url: http://127.0.0.1:4000
+    description: Local development server
+  - url: https://127.0.0.1:4000
+    description: Local development server
   - url: http://b3-port:4000
+    description: Cloud server b3-port
+  - url: https://b3-port:4000
     description: Cloud server b3-port
 
 paths:
