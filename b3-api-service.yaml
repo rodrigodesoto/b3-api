@@ -5,8 +5,9 @@ metadata:
 spec:
   selector:
     app: b3-api
+  type: NodePort
   ports:
-    - protocol: 'TCP'
+    - name: http
+      protocol: TCP
       port: 4000
-      targetPort: b3-port
-  type: LoadBalancer
+      targetPort: 4000
