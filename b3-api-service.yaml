@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     app: b3-api
-  type: NodePort
+  type: LoadBalancer
   ports:
     - name: http
       protocol: TCP
