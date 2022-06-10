@@ -1,10 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: b3-api-pod
-
+  name: b3-api-deployment
 spec:
-  containers:
-    - name: b3-api-containers
-      image: us-west1-docker.pkg.dev/projeto-estudos-344512/b3-api-repository/b3-api
+  replicas: 3
+  selector:
+    matchLabels:
+      app: b3-api
+  template:
+    metadata:
+      labels:
+        app: b3-api
+    spec:
+      containers:
+        - name: b3-api-containers
+          image: us-west1-docker.pkg.dev/projeto-estudos-344512/b3-api-repository/b3-api
+
       
