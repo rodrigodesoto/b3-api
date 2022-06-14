@@ -5,14 +5,14 @@ info:
   version: 1.0.0
 host: "api.endpoints.projeto-estudos-344512.cloud.goog"
 servers:
+  - url: http://api.endpoints.projeto-estudos-344512.cloud.goog:4000
+    description: Cloud development server
   - url: http://localhost:4000
     description: Local development server
   - url: http://host:4000
     description: Local development server
-  - url: http://api.endpoints.projeto-estudos-344512.cloud.goog:4000
-    description: Local development server
   - url: http://34.69.28.194:4000
-    description: Cloud server b3-port
+    description: Cloud server Dev
 basePath: "/"
 # Default to route all calls such as /docs and /healthz
 x-google-allow: all
