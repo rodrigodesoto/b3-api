@@ -5,6 +5,14 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
+
+const options = {
+  key: fs.readFileSync('./cert/key.pem'),
+  cert: fs.readFileSync('./cert/cert.pem')
+};
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -28,7 +36,12 @@ app.use('/api-docs', require('_helpers/swagger'));
 app.use(errorHandler);
 
 // start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
-app.listen(port, () => {
-    console.log('Server listening on port ' + port);
-});
+//app.listen(port, () => {
+//  console.log('Server listening on port ' + port);
+//});
+// Create an HTTP service.
+http.createServer(app).listen(4000);
+console.log('Server listening on port ' + 4000);
+// Create an HTTPS service identical to the HTTP service.
+https.createServer(options, app).listen(443);
+console.log('Server listening on port ' + 443);
