@@ -19,7 +19,7 @@ x-google-allow: all
 x-google-endpoints:
 - name: "api.endpoints.projeto-estudos-344512.cloud.goog"
   allowCors: true
-  target: 34.69.28.194
+  target: 35.194.32.42
 consumes:
 - "application/json"
 produces:
