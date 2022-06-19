@@ -8,6 +8,7 @@ spec:
   selector:
     app: b3-api
   type: LoadBalancer
+  loadBalancerIP: 35.194.32.42
   ports:
     - name: my-http-port
       protocol: TCP
