@@ -7,15 +7,15 @@ host: "api.endpoints.projeto-estudos-344512.cloud.goog"
 servers:
   - url: http://35.194.32.42:4000
     description: Local development server
-  - url: https://35.194.32.42:443
+  - url: https://35.194.32.42:444
     description: Local development server
   - url: http://localhost:4000
     description: Local development server
-  - url: https://localhost:443
+  - url: https://localhost:444
     description: Local development server
   - url: http://api.endpoints.projeto-estudos-344512.cloud.goog:4000
     description: Cloud development server
-  - url: https://api.endpoints.projeto-estudos-344512.cloud.goog:443
+  - url: https://api.endpoints.projeto-estudos-344512.cloud.goog:444
     description: Cloud development server
 basePath: "/"
 # Default to route all calls such as /docs and /healthz
