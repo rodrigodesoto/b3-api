@@ -5,25 +5,21 @@ info:
   version: 1.0.0
 host: "api.endpoints.projeto-estudos-344512.cloud.goog"
 servers:
-  - url: http://35.194.32.42:4000
+  - url: http://34.83.239.230:4000
     description: Local development server
-  - url: https://35.194.32.42:444
+  - url: https://34.83.239.230:443
     description: Local development server
   - url: http://localhost:4000
     description: Local development server
-  - url: https://localhost:444
+  - url: https://localhost:443
     description: Local development server
-  - url: http://api.endpoints.projeto-estudos-344512.cloud.goog:4000
-    description: Cloud development server
-  - url: https://api.endpoints.projeto-estudos-344512.cloud.goog:444
-    description: Cloud development server
 basePath: "/"
 # Default to route all calls such as /docs and /healthz
 x-google-allow: all
 x-google-endpoints:
 - name: "api.endpoints.projeto-estudos-344512.cloud.goog"
   allowCors: true
-  target: 35.194.32.42
+  target: 34.83.239.230
 consumes:
 - "application/json"
 produces:
