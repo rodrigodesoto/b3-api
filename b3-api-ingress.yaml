@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: b3-api-ingress
+spec:
+  tls:
+  - secretName: cert-b3-api
+  rules:
+  - http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: b3-api-service
+            port:
+              number: 443

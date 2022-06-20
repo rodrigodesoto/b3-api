@@ -8,12 +8,11 @@ spec:
   selector:
     app: b3-api
   type: LoadBalancer
-  loadBalancerIP: 35.194.32.42
+  loadBalancerIP: 34.83.239.230
   ports:
     - name: my-http-port
-      protocol: TCP
       port: 4000
       targetPort: 4000
     - name: my-https-port
-      port: 444
-      targetPort: 4000
+      port: 443
+      targetPort: 443
