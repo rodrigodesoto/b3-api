@@ -1,4 +1,5 @@
 ﻿require('rootpath')();
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -26,10 +27,10 @@ app.use((req, res, next) => {
     next();
   });
 
-// api routes
+// api rotas
 app.use('/accounts', require('./accounts/accounts.controller'));
 
-// swagger docs route
+// swagger docs rota
 app.use('/api-docs', require('_helpers/swagger'));
 
 // global error handler
@@ -40,8 +41,8 @@ app.use(errorHandler);
 //  console.log('Server listening on port ' + port);
 //});
 // Create an HTTP service.
-http.createServer(app).listen(4000);
-console.log('Server listening on port ' + 4000);
+http.createServer(app).listen(process.env.PORT || 4000);
+console.log('Server listening on port ' + process.env.PORT);
 // Create an HTTPS service identical to the HTTP service.
 https.createServer(options, app).listen(443);
 console.log('Server listening on port ' + 443);
