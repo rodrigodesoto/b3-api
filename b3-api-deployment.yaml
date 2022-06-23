@@ -18,7 +18,13 @@ spec:
           envFrom:
             - configMapRef:
                 name: b3-api-variables
-
+          resources:
+            requests:
+              memory: "256M"
+              cpu: "250m"
+            limits:
+              memory: "512M"
+              cpu: "500m"
           ports:
             - containerPort: 4000
 
