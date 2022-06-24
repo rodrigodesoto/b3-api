@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap 
+metadata:
+  name: b3-api-variables
+  namespace: default
+data:
+  PORT: 4000
+  MONGO_URL: mongodb+srv://Soto:Mongo77*@clusterapi.so1qf.mongodb.net/b3DataBase?retryWrites=true&w=majority
+  JWTSECRET: b3secretjwt
+  CORS_ORIGIN: *
