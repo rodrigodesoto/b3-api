@@ -5,9 +5,9 @@ info:
   version: 1.0.0
 host: "api.endpoints.projeto-estudos-344512.cloud.goog"
 servers:
-  - url: http://34.83.239.230:4000
+  - url: http://34.105.26.64:4000
     description: Local development server
-  - url: https://34.83.239.230:443
+  - url: https://34.105.26.64:443
     description: Local development server
   - url: http://127.0.0.1:4000
     description: Local development server
