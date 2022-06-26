@@ -11,8 +11,8 @@ const http = require('http');
 const fs = require('fs');
 
 const options = {
-  key: fs.readFileSync('./cert/key.pem'),
-  cert: fs.readFileSync('./cert/cert.pem')
+  key: fs.readFileSync('./cert/cert-b3-api.key'),
+  cert: fs.readFileSync('./cert/cert-b3-api.crt')
 };
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,9 +37,10 @@ app.use('/api-docs', require('_helpers/swagger'));
 app.use(errorHandler);
 
 // start server
-//app.listen(port, () => {
-//  console.log('Server listening on port ' + port);
-//});
+/* const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
+app.listen(port, () => {
+ console.log('Server listening on port ' + port);
+}); */
 // Create an HTTP service.
 http.createServer(app).listen(process.env.PORT || 4000);
 console.log('Server listening on port ' + process.env.PORT);

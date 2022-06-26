@@ -9,9 +9,9 @@ servers:
     description: Local development server
   - url: https://34.105.26.64:443
     description: Local development server
-  - url: http://127.0.0.1:4000
+  - url: http://localhost:4000
     description: Local development server
-  - url: https://127.0.0.1:443
+  - url: https://localhost:443
     description: Local development server
 basePath: "/"
 consumes:
