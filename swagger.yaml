@@ -5,13 +5,13 @@ info:
   version: 1.0.0
 host: "api.endpoints.projeto-estudos-344512.cloud.goog"
 servers:
-  - url: http://34.105.26.64:4000
+  - url: http://104.154.47.95:4000
     description: Local development server
-  - url: https://34.105.26.64:443
+  - url: https://104.154.47.95:443
     description: Local development server
-  - url: http://localhost:4000
+  - url: http://rodrigodesoto.com.br
     description: Local development server
-  - url: https://localhost:443
+  - url: https://rodrigodesoto.com.br
     description: Local development server
 basePath: "/"
 consumes:
