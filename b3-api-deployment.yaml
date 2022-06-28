@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: b3-api-containers
-          image: us-west1-docker.pkg.dev/b3-api-354219/b3-repository/b3-api
+          image: us-central1-docker.pkg.dev/b3-api-354219/b3-storage/b3-api
           envFrom:
             - configMapRef:
                 name: b3-api-variables
