@@ -10,5 +10,5 @@ spec:
   ports:
     - name: http
       protocol: TCP
-      port: 4000
+      port: 80
       targetPort: 4000
