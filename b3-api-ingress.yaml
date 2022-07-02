@@ -1,17 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: b3-api-ingress
+  name: b3-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: b3-api-ip
 spec:
-  tls:
-  - secretName: cert-b3-api
-  rules:
-  - http:
-      paths:
-      - path: /*
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: b3-api-service
-            port:
-              number: 443
+  defaultBackend:
+    service: 
+      name: b3-service
+      port: 
+        number: 80
