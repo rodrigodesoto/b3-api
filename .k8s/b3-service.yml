@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: b3-api-deployment
+  name: b3-service
 spec:
   selector:
-    app: b3-api-deployment
+    app: b3-api
   type: NodePort
   ports:
     - protocol: TCP
