@@ -5,6 +5,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: "b3-api-ip"
 spec:
-  backend:
-    serviceName: b3-api-deployment
-    servicePort: 4000
+  defaultBackend:
+    service: 
+      name: b3-service
+      port: 
+        number: 80
