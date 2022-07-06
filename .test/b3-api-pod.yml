@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: b3-api-pod
+spec:
+  containers:
+    - name: b3-api-containers
+      image: us-central1-docker.pkg.dev/b3-api-354219/b3-storage/b3-api
+      envFrom:
+        - configMapRef:
+            name: b3-api-configmap
+      resources:
+        requests:
+          memory: "256M"
+          cpu: "250m"
+        limits:
+          memory: "512M"
+          cpu: "500m"
+      ports:
+        - containerPort: 4000
