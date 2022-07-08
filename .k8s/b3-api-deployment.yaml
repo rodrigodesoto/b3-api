@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: b3-api-containers
-          image: us-central1-docker.pkg.dev/b3-api-354219/b3-storage/b3-api
+          image: us-central1-docker.pkg.dev/b3-api-354219/b3-storage/b3-api:latest
           envFrom:
             - configMapRef:
                 name: b3-api-configmap
@@ -27,27 +27,3 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 4000
-                   livenessProbe:
-          failureThreshold: 10
-            httpGet:
-              path: /public/kubernetes-readiness-probe
-              port: 4000
-              scheme: HTTP
-            initialDelaySeconds: 20
-            periodSeconds: 30
-            successThreshold: 1
-            timeoutSeconds: 3
-          readinessProbe:
-            failureThreshold: 10
-            httpGet:
-              path: /public/kubernetes-readiness-probe
-              port: 4000
-              scheme: HTTP
-            initialDelaySeconds: 20
-            periodSeconds: 30
-            successThreshold: 1
-            timeoutSeconds: 3
-
-
-
-      
