@@ -27,3 +27,9 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 4000
+          readinessProbe:
+            httpGet:
+              path: "/api-docs/"
+              port: 4000
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
