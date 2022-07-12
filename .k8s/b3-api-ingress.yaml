@@ -11,7 +11,7 @@ spec:
   - host: rodrigodesoto.com.br
     http:
       paths:
-      - path: /api-docs/
+      - path: /*
         pathType: ImplementationSpecific
         backend:
           service:
