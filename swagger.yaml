@@ -5,9 +5,9 @@ info:
   version: 1.0.0
 host: "api.endpoints.projeto-estudos-344512.cloud.goog"
 servers:
-  - url: http://rodrigodesoto.com.br
+  - url: https://rodrigodesoto.com.br
     description: Local development server
-  - url: http://rodrigodesoto.com
+  - url: https://rodrigodesoto.com
     description: Local development server
 basePath: "/"
 consumes:
