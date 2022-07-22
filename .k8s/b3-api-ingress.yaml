@@ -9,7 +9,7 @@ spec:
   tls:
   - secretName: cert-b3-api-tls
   rules:
-  #- host: rodrigodesoto.com.br
+  - host: rodrigodesoto.com.br
   - http:
       paths:
       - path: /*
