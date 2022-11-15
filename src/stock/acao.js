@@ -4,12 +4,12 @@ const bcrypt = require('bcryptjs');
 
 const AcaoSchema = new Schema({
     codAcao: { type: String, required: true, unique: true, upercase: true },
-    vlrAtual: { type: Number, required: true},
-    vlrCompra: { type: Number, required: true},
-    varDia:{ type: Number, required: true},
+    vlrAtual: { type: Number, required: false},
+    vlrCompra: { type: Number, required: false},
+    varDia:{ type: Number, required: false},
     var30d: { type: Number, required: false},
     var12m: { type: Number, required: false},
-    qtd: { type: Number, required: true},
+    qtd: { type: Number, required: false},
     vlrInvest: { type: Number, required: false},
     vlrTotal: { type: Number, required: false},
     vlrLucro: { type: Number, required: false},

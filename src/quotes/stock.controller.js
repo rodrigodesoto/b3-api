@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const codAcaoEnum = require('../config/codAcao');
-const Acao = require('../model/acao');
+const Acao = require('../stock/acao');
 const moment = require("moment");
 const authorize = require('src/_middleware/authorize')
-var cotacoesBovespa = require('src/cotacoes-bovespa');
+// var cotacoesBovespa = require('src/cotacoes-bovespa');
 const {DateUtils} = require("../util/date-utils");
 
 router.get('/carteira', authorize(), (req, res) => {
@@ -29,27 +29,27 @@ router.post('/insereAcoes', authorize(), async (req, res) => {
 
 async function salvarAcao(codAcao){
     const ret = true;
-    cotacoesBovespa.getCurrentQuote(codAcao, function (err, quote) {
-        console.log(quote.price);
-        const acaoCarteira = {
-            codAcao: codAcao,
-            vlrAtual: quote.price,
-            vlrCompra: 100,
-            varDia: quote.marketChange,
-            var30d: 6.66,
-            var12m: 6.66,
-            qtd: 10,
-            vlrInvest: 1000,
-            vlrTotal: 1000,
-            vlrLucro: 9.99,
-            prcLucro: 10,
-            dtAtual: new Date()
-    }
-
-   Acao.create(acaoCarteira, (err, data) => {
-    if(err) ret = false;
-        });
-    });
+   //  cotacoesBovespa.getCurrentQuote(codAcao, function (err, quote) {
+   //      console.log(quote.price);
+   //      const acaoCarteira = {
+   //          codAcao: codAcao,
+   //          vlrAtual: quote.price,
+   //          vlrCompra: 100,
+   //          varDia: quote.marketChange,
+   //          var30d: 6.66,
+   //          var12m: 6.66,
+   //          qtd: 10,
+   //          vlrInvest: 1000,
+   //          vlrTotal: 1000,
+   //          vlrLucro: 9.99,
+   //          prcLucro: 10,
+   //          dtAtual: new Date()
+   //  }
+   //
+   // Acao.create(acaoCarteira, (err, data) => {
+   //  if(err) ret = false;
+   //      });
+   //  });
     return ret;
 }
 
@@ -59,14 +59,14 @@ router.get('/stock-price/:stock', authorize(),async (req, res) => {
         var dateFinal = new Date(moment(new Date(), 'DD/MM/YYYY').format('YYYY-MM-DD  23:59:00'));
         var dateIni = dateInicial.setDate(dateInicial.getDate());
         var dateFin = dateFinal.setDate(dateFinal.getDate());
-        await cotacoesBovespa.getHistorical(`${stock}`, dateIni, dateFin, function (err, quotes) {
-           if(quotes.length == 0){
-               return res.status(200).json({ message: 'Sem cotação para a data ' + DateUtils.format(new Date(), 'DD/MM/YYYY') });
-           }else{
-               console.log(quotes);
-               return res.status(200).send(quotes);
-           }
-        });
+        // await cotacoesBovespa.getHistorical(`${stock}`, dateIni, dateFin, function (err, quotes) {
+        //    if(quotes.length == 0){
+        //        return res.status(200).json({ message: 'Sem cotação para a data ' + DateUtils.format(new Date(), 'DD/MM/YYYY') });
+        //    }else{
+        //        console.log(quotes);
+        //        return res.status(200).send(quotes);
+        //    }
+        // });
         // cotacoesBovespa.getHistoricalData(`${stock}`, function (err, quotes) {
         //     console.log(quotes);
         // });
@@ -80,10 +80,10 @@ router.get('/stock-price/', authorize(),async (req, res) => {
     var dateFinal = new Date(moment(dataCotacaoFim, 'DD/MM/YYYY').format('YYYY-MM-DD  23:59:00'));
     var dateIni = dateInicial.setDate(dateInicial.getDate());
     var dateFin = dateFinal.setDate(dateFinal.getDate());
-    await cotacoesBovespa.getHistorical(`${stock}`, dateIni, dateFin, function (err, quotes) {
-        console.log(quotes);
-        return res.status(200).send(quotes);
-    });
+    // await cotacoesBovespa.getHistorical(`${stock}`, dateIni, dateFin, function (err, quotes) {
+    //     console.log(quotes);
+    //     return res.status(200).send(quotes);
+    // });
     // cotacoesBovespa.getHistoricalData(`${stock}`, function (err, quotes) {
     //     console.log(quotes);
     // });
