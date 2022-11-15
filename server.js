@@ -44,10 +44,10 @@ app.use('/quotes', require('./src/quotes/stock.controller'));
 app.use(errorHandler);
 
 // Create an HTTP service.
-http.createServer(app).listen(process.env.PORT || 4000);
+http.createServer(app).listen(process.env.PORT_AP || 4000);
 console.log('Server listening on port ' + process.env.PORT);
 
-const server = app.listen(3000, () => {
+const server = app.listen(process.env.PORT_WS || 3000, () => {
     console.log(`App Express is running!`);
 })
 
