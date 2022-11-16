@@ -52,8 +52,8 @@ app.use('/quotes', require('./src/quotes/stock.controller'));
 http.createServer(app).listen(process.env.PORT || 4000);
 console.log('Server http listening on port ' + process.env.PORT);
 
-const server = app.listen(process.env.PORT || 4000, () => {
-    console.log('WebSocket is running on port ' + process.env.PORT);
+const server = app.listen(3000, () => {
+    console.log('WebSocket is running on port ' + 3000);
 })
 
 const wss = appWs(server);
