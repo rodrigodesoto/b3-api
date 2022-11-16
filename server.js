@@ -44,13 +44,13 @@ app.use('/quotes', require('./src/quotes/stock.controller'));
 // app.use('/stock', require('./src/stock/acao.controller'));
 
 // global error handler
-app.use(errorHandler);
-var portAp = process.env.PORT_AP || 4000;
+// app.use(errorHandler);
+// var portAp = process.env.PORT_AP || 4000;
 // var portWs = process.env.PORT_WS || 3000;
 
 // Create an HTTP service.
-http.createServer(app).listen(portAp);
-console.log('Server http listening on port ' + portAp);
+http.createServer(app).listen(4000);
+console.log('Server http listening on port ' + 4000);
 
 // const server = app.listen(portWs, () => {
 //     console.log('WebSocket is running on port ' + portWs);
