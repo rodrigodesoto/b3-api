@@ -4,8 +4,9 @@ mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URL, connectionOpt
 mongoose.Promise = global.Promise;
 
 module.exports = {
-    Account: require('accounts/account.model'),
-    RefreshToken: require('accounts/refresh-token.model'),
+    Account: require('src/accounts/account.model'),
+    RefreshToken: require('src/accounts/refresh-token.model'),
+    Acoes: require('src/stock/acao'),
     isValidId
 };
 
