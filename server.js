@@ -49,8 +49,8 @@ app.use('/quotes', require('./src/quotes/stock.controller'));
 // var portWs = process.env.PORT_WS || 3000;
 
 // Create an HTTP service.
-http.createServer(app).listen(process.env.PORT || 4000);
-console.log('Server http listening on port ' + process.env.PORT);
+// http.createServer(app).listen(process.env.PORT || 4000);
+// console.log('Server http listening on port ' + process.env.PORT);
 
 const server = app.listen(process.env.PORT_WS || 3000, () => {
     console.log('WebSocket is running on port ' + process.env.PORT_WS || 3000);
