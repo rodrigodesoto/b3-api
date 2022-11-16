@@ -45,13 +45,15 @@ app.use('/quotes', require('./src/quotes/stock.controller'));
 
 // global error handler
 app.use(errorHandler);
+var portAp = process.env.PORT_AP || 4000;
+var portWs = process.env.PORT_WS || 3000;
 
 // Create an HTTP service.
-http.createServer(app).listen(process.env.PORT_AP);
-console.log('Server http listening on port ' + process.env.PORT_AP);
+http.createServer(app).listen(portAp);
+console.log('Server http listening on port ' + portAp);
 
-const server = app.listen(process.env.PORT_WS, () => {
-    console.log('WebSocket is running on port ' + process.env.PORT_WS);
+const server = app.listen(portWs, () => {
+    console.log('WebSocket is running on port ' + portWs);
 })
 
 const wss = appWs(server);

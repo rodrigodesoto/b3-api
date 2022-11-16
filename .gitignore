@@ -1,6 +1,6 @@
 # Variáveis de ambiente
 .env
- .idea
+
 # Logs
 logs
 *.log
@@ -42,4 +42,4 @@ typings
 
 # Instruções do projeto
 instrucoes.txt
-
+.idea
