@@ -1,12 +1,12 @@
 ﻿const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
-const validateRequest = require('_middleware/validate-request');
-const authorize = require('_middleware/authorize')
-const Role = require('_helpers/role');
+const validateRequest = require('src/_middleware/validate-request');
+const authorize = require('src/_middleware/authorize')
+const Role = require('src/_helpers/role');
 const accountService = require('./account.service');
 
-// routes
+// quotes
 router.post('/authenticate', authenticateSchema, authenticate);
 router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);

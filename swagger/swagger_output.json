@@ -1,0 +1,1230 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "b3-api",
+    "description": "Node.js + MongoDB - API com inscrição de e-mail, verificação, autenticação e senha esquecida"
+  },
+  "host": "api.endpoints.projeto-estudos-344512.cloud.goog",
+  "servers": [
+    {
+      "url": "http://localhost:4000/",
+      "description": "Local development server"
+    },
+    {
+      "url": "https://rodrigodesoto.com",
+      "description": "Local development server"
+    }
+  ],
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "text/html",
+    "application/json"
+  ],
+  "paths": {
+    "/accounts/authenticate": {
+      "post": {
+        "summary": "Autentique as credenciais da conta e retorne um token JWT e um cookie com um token de atualização",
+        "description": "As contas devem ser verificadas antes da autenticação.",
+        "operationId": "authenticate",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "jason@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "pass123"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Detalhes da conta, um token de acesso JWT e um cookie de token de atualização",
+            "headers": {
+              "Set-Cookie": {
+                "description": "`refreshToken`",
+                "schema": {
+                  "type": "string",
+                  "example": "refreshToken=51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550; Path=/; Expires=Tue, 16 Jun 2020 09:14:17 GMT; HttpOnly"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "5eb12e197e06a76ccdefc121"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Mr"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "Jason"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Watmore"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jason@example.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "Admin"
+                    },
+                    "created": {
+                      "type": "string",
+                      "example": "2020-05-05T09:12:57.848Z"
+                    },
+                    "isVerified": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "jwtToken": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWIxMmUxOTdlMDZhNzZjY2RlZmMxMjEiLCJpZCI6IjVlYjEyZTE5N2UwNmE3NmNjZGVmYzEyMSIsImlhdCI6MTU4ODc1ODE1N30.xR9H0STbFOpSkuGA9jHNZOJ6eS7umHHqKRhI807YT1Y"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "O e-mail ou senha está incorreto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email ou password está incorreto"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/refresh-token": {
+      "post": {
+        "summary": "Use um token de atualização para gerar um novo token JWT e um novo token de atualização",
+        "description": "O token de atualização é enviado e retornado por meio de cookies.",
+        "operationId": "refreshToken",
+        "parameters": [
+          {
+            "in": "cookie",
+            "name": "refreshToken",
+            "description": "The `refreshToken` cookie",
+            "schema": {
+              "type": "string",
+              "example": "51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da conta, um token de acesso JWT e um novo cookie de token de atualização",
+            "headers": {
+              "Set-Cookie": {
+                "description": "`refreshToken`",
+                "schema": {
+                  "type": "string",
+                  "example": "refreshToken=51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550; Path=/; Expires=Tue, 16 Jun 2020 09:14:17 GMT; HttpOnly"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "5eb12e197e06a76ccdefc121"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Mr"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "Jason"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Watmore"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jason@example.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "Admin"
+                    },
+                    "created": {
+                      "type": "string",
+                      "example": "2020-05-05T09:12:57.848Z"
+                    },
+                    "isVerified": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "jwtToken": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWIxMmUxOTdlMDZhNzZjY2RlZmMxMjEiLCJpZCI6IjVlYjEyZTE5N2UwNmE3NmNjZGVmYzEyMSIsImlhdCI6MTU4ODc1ODE1N30.xR9H0STbFOpSkuGA9jHNZOJ6eS7umHHqKRhI807YT1Y"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "O token de atualização é inválido, revogado ou expirou",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/revoke-token": {
+      "post": {
+        "summary": "Revogar um token de atualização",
+        "description": "Os usuários administradores podem revogar os tokens de qualquer conta, os usuários regulares só podem revogar seus próprios tokens.",
+        "operationId": "revokeToken",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "cookie",
+            "name": "refreshToken",
+            "description": "O token de atualização pode ser enviado em um cookie ou no corpo da postagem, se ambos forem enviados, o token no corpo será usado.",
+            "schema": {
+              "type": "string",
+              "example": "51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "51872eca5efedcf424db4cf5afd16a9d00ad25b743a034c9c221afc85d18dcd5e4ad6e3f08607550"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "O token de atualização foi revogado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token revogado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "O token de atualização é inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/accounts/register": {
+      "post": {
+        "summary": "Registre uma nova conta de usuário e envie um e-mail de verificação",
+        "description": "A primeira conta cadastrada no sistema é atribuída a função 'Admin', outras contas são atribuídas à função 'Usuário'.",
+        "operationId": "register",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Mr"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "Jason"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Watmore"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jason@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "pass123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "pass123"
+                  },
+                  "acceptTerms": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "title",
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "password",
+                  "confirmPassword",
+                  "acceptTerms"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A solicitação de registro foi bem-sucedida e um e-mail de verificação foi enviado para o endereço de e-mail especificado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Registro bem-sucedido, verifique seu e-mail para obter instruções de verificação"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/verify-email": {
+      "post": {
+        "summary": "Verifique uma nova conta com um token de verificação recebido por e-mail após o registro",
+        "operationId": "verifyEmail",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "3c7f8d9c4cb348ff95a0b74a1452aa24fc9611bb76768bb9eafeeb826ddae2935f1880bc7713318f"
+                  }
+                },
+                "required": [
+                  "token"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A verificação foi bem-sucedida, então agora você pode fazer login na conta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Verificação bem-sucedida, agora você pode fazer login"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha na verificação devido a um token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Falha na verificação"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/forgot-password": {
+      "post": {
+        "summary": "Envie o endereço de e-mail para redefinir a senha em uma conta",
+        "operationId": "forgotPassword",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "jason@example.com"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A solicitação foi recebida e um e-mail foi enviado para o endereço especificado com instruções de redefinição de senha (se o endereço de e-mail estiver associado a uma conta)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Verifique seu e-mail para obter instruções de redefinição de senha"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/validate-reset-token": {
+      "post": {
+        "summary": "Valide o token de redefinição de senha recebido por e-mail após enviar para a rota /accounts/forgot-password",
+        "operationId": "validateResetToken",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "3c7f8d9c4cb348ff95a0b74a1452aa24fc9611bb76768bb9eafeeb826ddae2935f1880bc7713318f"
+                  }
+                },
+                "required": [
+                  "token"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token é válido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token é válido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token é invalido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token é invalido"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/reset-password": {
+      "post": {
+        "summary": "Redefinir a senha de uma conta",
+        "operationId": "resetPassword",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "3c7f8d9c4cb348ff95a0b74a1452aa24fc9611bb76768bb9eafeeb826ddae2935f1880bc7713318f"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "newPass123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "newPass123"
+                  }
+                },
+                "required": [
+                  "token",
+                  "password",
+                  "confirmPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A redefinição de senha foi bem-sucedida, então agora você pode fazer login na conta com a nova senha",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Redefinição de senha bem-sucedida, agora você pode fazer login"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha na redefinição de senha devido a um token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "get": {
+        "summary": "Obter uma lista de todas as contas",
+        "description": "Restrito a usuários administradores.",
+        "operationId": "getAllAccounts",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Uma matriz de todas as contas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "5eb12e197e06a76ccdefc121"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "Mr"
+                      },
+                      "firstName": {
+                        "type": "string",
+                        "example": "Jason"
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "example": "Watmore"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "jason@example.com"
+                      },
+                      "role": {
+                        "type": "string",
+                        "example": "Admin"
+                      },
+                      "created": {
+                        "type": "string",
+                        "example": "2020-05-05T09:12:57.848Z"
+                      },
+                      "updated": {
+                        "type": "string",
+                        "example": "2020-05-08T03:11:21.553Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar uma nova conta",
+        "description": "Restrito a usuários administradores.",
+        "operationId": "createAccount",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Mr"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "Jason"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Watmore"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jason@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "pass123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "pass123"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "Admin",
+                      "User"
+                    ]
+                  }
+                },
+                "required": [
+                  "title",
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "password",
+                  "confirmPassword",
+                  "role"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Conta criada com sucesso, a verificação não é necessária para contas criadas com este endpoint. Os detalhes da nova conta são retornados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "5eb12e197e06a76ccdefc121"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Mr"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "Jason"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Watmore"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jason@example.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "Admin"
+                    },
+                    "created": {
+                      "type": "string",
+                      "example": "2020-05-05T09:12:57.848Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "O e-mail já está cadastrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email 'jason@example.com' já está cadastrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/accounts/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "description": "ID da conta",
+          "required": true,
+          "example": "5eb12e197e06a76ccdefc121",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Obtenha uma única conta por id",
+        "description": "Os usuários administradores podem acessar qualquer conta, os usuários regulares estão restritos à sua própria conta.",
+        "operationId": "getAccountById",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da conta especificada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "5eb12e197e06a76ccdefc121"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Mr"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "Jason"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Watmore"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jason@example.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "Admin"
+                    },
+                    "created": {
+                      "type": "string",
+                      "example": "2020-05-05T09:12:57.848Z"
+                    },
+                    "updated": {
+                      "type": "string",
+                      "example": "2020-05-08T03:11:21.553Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar uma conta",
+        "description": "Os usuários administradores podem atualizar qualquer conta, incluindo as permissões, os usuários regulares estão restritos à sua própria conta e não podem atualizar as permissões.",
+        "operationId": "updateAccount",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Mr"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "Jason"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Watmore"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jason@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "pass123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "pass123"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "Admin",
+                      "User"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Conta atualizada com sucesso. Os detalhes da conta atualizada são retornados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "5eb12e197e06a76ccdefc121"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Mr"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "Jason"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Watmore"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jason@example.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "Admin"
+                    },
+                    "created": {
+                      "type": "string",
+                      "example": "2020-05-05T09:12:57.848Z"
+                    },
+                    "updated": {
+                      "type": "string",
+                      "example": "2020-05-08T03:11:21.553Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir uma conta",
+        "description": "Os usuários administradores podem excluir qualquer conta, os usuários regulares estão restritos à sua própria conta.",
+        "operationId": "deleteAccount",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conta excluída com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Conta excluída com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/quotes/stock-price/{stock}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "stock",
+          "description": "Código da ação",
+          "required": true,
+          "example": "PRIO3",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Consultar a cotação de uma ação",
+        "description": "Consultar o último valor de uma ação.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cria um objeto json por data com os preços e volume do ativo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "example": "2022-09-05"
+                      },
+                      "open": {
+                        "type": "number",
+                        "example": 28.59
+                      },
+                      "high": {
+                        "type": "number",
+                        "example": 29.77
+                      },
+                      "low": {
+                        "type": "number",
+                        "example": 28.51
+                      },
+                      "close": {
+                        "type": "number",
+                        "example": 29.540001
+                      },
+                      "volume": {
+                        "type": "number",
+                        "example": 24967700
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/quotes/stock-price/": {
+      "get": {
+        "description": "Consultar o valor de uma ação de acordo com o período.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "stock",
+            "in": "query",
+            "type": "string",
+            "description": "Código da ação",
+            "required": true,
+            "example": "PRIO3"
+          },
+          {
+            "name": "dataCotacaoIni",
+            "in": "query",
+            "type": "string",
+            "description": "Data inicial da cotação",
+            "required": true,
+            "example": "05/09/2022"
+          },
+          {
+            "name": "dataCotacaoFim",
+            "in": "query",
+            "type": "string",
+            "description": "Data final da cotação",
+            "required": true,
+            "example": "09/09/2022"
+
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cria um objeto json por data com os preços e volume do ativo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "example": "2022-09-05"
+                      },
+                      "open": {
+                        "type": "number",
+                        "example": 28.59
+                      },
+                      "high": {
+                        "type": "number",
+                        "example": 29.77
+                      },
+                      "low": {
+                        "type": "number",
+                        "example": 28.51
+                      },
+                      "close": {
+                        "type": "number",
+                        "example": 29.540001
+                      },
+                      "volume": {
+                        "type": "number",
+                        "example": 24967700
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cotacoes/insereAcoes": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/cotacoes/carteira": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "O token de acesso está ausente ou é inválido ou o usuário não tem acesso para executar a ação",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Não autorizado"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Não encontrado",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
