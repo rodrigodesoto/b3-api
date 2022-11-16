@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="741ac8e0-eb36-4f3f-9fba-a5ad2462be4e" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2EUvvo443wPJzOheyAbrmYw0lUq" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2021.3.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Soto\Cursos\b3-api" />
+      <recent name="C:\Soto\Cursos\b3-api\src\model" />
+      <recent name="C:\Soto\Cursos\b3-api\src\stocks" />
+      <recent name="C:\Soto\Cursos\b3-api\src" />
+      <recent name="C:\Soto\Cursos\b3-api\src\util" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Soto\Cursos\b3-api\src" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="start:dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start:dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start:dev" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="741ac8e0-eb36-4f3f-9fba-a5ad2462be4e" name="Changes" comment="" />
+      <created>1662663211143</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1662663211143</updated>
+      <workItem from="1662663212641" duration="2526000" />
+      <workItem from="1662690341463" duration="2000" />
+      <workItem from="1662726088887" duration="28000" />
+      <workItem from="1662733116625" duration="2945000" />
+      <workItem from="1662745227766" duration="2958000" />
+      <workItem from="1662770462961" duration="7162000" />
+      <workItem from="1662784291805" duration="374000" />
+      <workItem from="1662823172238" duration="23571000" />
+      <workItem from="1662858428519" duration="9535000" />
+      <workItem from="1662910939338" duration="6897000" />
+      <workItem from="1662942678667" duration="1274000" />
+      <workItem from="1662985350534" duration="47000" />
+      <workItem from="1664289396359" duration="14000" />
+      <workItem from="1664289558900" duration="227000" />
+      <workItem from="1664307210082" duration="150000" />
+      <workItem from="1664308639411" duration="367000" />
+      <workItem from="1664319365525" duration="5000" />
+      <workItem from="1664371260441" duration="643000" />
+      <workItem from="1665261079617" duration="255000" />
+      <workItem from="1665262726414" duration="1296000" />
+      <workItem from="1667269844707" duration="1407000" />
+      <workItem from="1667307520225" duration="4761000" />
+      <workItem from="1667347416118" duration="596000" />
+      <workItem from="1667408185811" duration="129000" />
+      <workItem from="1667434843161" duration="297000" />
+      <workItem from="1667437084968" duration="680000" />
+      <workItem from="1667508192190" duration="16000" />
+      <workItem from="1667953222649" duration="598000" />
+      <workItem from="1668429479462" duration="251000" />
+      <workItem from="1668442439880" duration="20602000" />
+      <workItem from="1668529869255" duration="1943000" />
+      <workItem from="1668553949892" duration="6636000" />
+      <workItem from="1668566307094" duration="19000" />
+      <workItem from="1668566346883" duration="403000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/quotes/stock.controller.js</url>
+          <line>11</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/quotes/stock.controller.js</url>
+          <line>16</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/quotes/stock.controller.js</url>
+          <line>31</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/accounts/account.service.js</url>
+          <line>156</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/accounts/accounts.controller.js</url>
+          <line>153</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/accounts/account.service.js</url>
+          <line>212</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/accounts/accounts.controller.js</url>
+          <line>106</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/accounts/accounts.controller.js</url>
+          <line>34</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/stock/acao.service.js</url>
+          <line>23</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/stock/acao.controller.js</url>
+          <line>13</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/stock/acao.controller.js</url>
+          <line>19</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="js.build_tools.npm">
+        <watch expression="quotes.isEmpty()" />
+        <watch expression="quotes" />
+        <watch expression="authorize()" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
