@@ -22,6 +22,9 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
 app.use(morgan('dev'));
+app.post('/login', (req, res, next) => {
+    res.json({ token: '123456' });
+});
 
 // allow cors requests from any origin and with credentials
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
@@ -45,15 +48,11 @@ app.use(errorHandler);
 
 // Create an HTTP service.
 http.createServer(app).listen(process.env.PORT_AP || 4000);
-console.log('Server listening on port ' + process.env.PORT);
+console.log('Server http listening on port ' + process.env.PORT);
 
 const server = app.listen(process.env.PORT_WS || 3000, () => {
-    console.log(`App Express is running!`);
+    console.log(`WebSocket is running!`);
 })
-
-app.post('/login', (req, res, next) => {
-    res.json({ token: '123456' });
-});
 
 const wss = appWs(server);
 
