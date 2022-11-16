@@ -1,33 +1,50 @@
 {
-    "name": "b3-api",
-    "version": "1.0.0",
-    "description": "NodeJS + MongoDB API for Email Sign Up with Verification, Authentication & Forgot Password",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/rodrigodesoto/b3-api.git"
-    },
-    "scripts": {
-        "start": "node ./server.js",
-        "start:dev": "nodemon ./server.js"
-    },
-    "dependencies": {
-        "bcryptjs": "^2.4.3",
-        "body-parser": "^1.19.0",
-        "cookie-parser": "^1.4.5",
-        "cors": "^2.8.5",
-        "express-jwt": "^6.0.0",
-        "express": "^4.17.1",
-        "joi": "^17.1.1",
-        "jsonwebtoken": "^8.5.1",
-        "mongodb": "^3.5.7",
-        "mongoose": "^5.9.25",
-        "nodemailer": "^6.4.6",
-        "rootpath": "^0.1.2",
-        "swagger-ui-express": "^4.1.4",
-        "yamljs": "^0.3.0"
-    },
-    "devDependencies": {
-        "nodemon": "^2.0.3"
-    }
+  "name": "b3-api",
+  "version": "2.0.0",
+  "description": "NodeJS + MongoDB API for Email Sign Up with Verification, Authentication & Forgot Password",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodrigodesoto/b3-api.git"
+  },
+  "scripts": {
+    "start": "node ./server.js",
+    "start:dev": "nodemon ./server.js",
+    "swagger-autogen": "node ./src/_helpers/swagger.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-jwt": "^6.0.0",
+    "helmet": "^6.0.0",
+    "joi": "^17.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
+    "mongodb": "^3.5.7",
+    "mongoose": "^5.9.25",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.7",
+    "nodemailer": "^6.4.6",
+    "request": "^2.88.2",
+    "rootpath": "^0.1.2",
+    "swagger-autogen": "^2.21.5",
+    "swagger-ui-express": "^4.5.0",
+    "ws": "^8.11.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  },
+  "bugs": {
+    "url": "https://github.com/rodrigodesoto/b3-api/issues"
+  },
+  "homepage": "https://github.com/rodrigodesoto/b3-api#readme",
+  "main": "server.js",
+  "keywords": [],
+  "author": ""
 }

@@ -1,12 +1,12 @@
 ﻿const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
-const validateRequest = require('_middleware/validate-request');
-const authorize = require('_middleware/authorize')
-const Role = require('_helpers/role');
+const validateRequest = require('src/_middleware/validate-request');
+const authorize = require('src/_middleware/authorize')
+const Role = require('src/_helpers/role');
 const accountService = require('./account.service');
 
-// routes
+// quotes
 router.post('/authenticate', authenticateSchema, authenticate);
 router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
@@ -65,15 +65,15 @@ function revokeToken(req, res, next) {
     const token = req.body.token || req.cookies.refreshToken;
     const ipAddress = req.ip;
 
-    if (!token) return res.status(400).json({ message: 'Token is required' });
+    if (!token) return res.status(400).json({ message: 'Token é obrigatório' });
 
     // users can revoke their own tokens and admins can revoke any tokens
     if (!req.user.ownsToken(token) && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Não autorizado' });
     }
 
     accountService.revokeToken({ token, ipAddress })
-        .then(() => res.json({ message: 'Token revoked' }))
+        .then(() => res.json({ message: 'Token revogado' }))
         .catch(next);
 }
 
@@ -92,7 +92,7 @@ function registerSchema(req, res, next) {
 
 function register(req, res, next) {
     accountService.register(req.body, req.get('origin'))
-        .then(() => res.json({ message: 'Registration successful, please check your email for verification instructions' }))
+        .then(() => res.json({ message: 'Registro bem-sucedido, verifique seu e-mail para obter instruções de verificação' }))
         .catch(next);
 }
 
@@ -105,7 +105,7 @@ function verifyEmailSchema(req, res, next) {
 
 function verifyEmail(req, res, next) {
     accountService.verifyEmail(req.body)
-        .then(() => res.json({ message: 'Verification successful, you can now login' }))
+        .then(() => res.json({ message: 'Verificação bem-sucedida, agora você pode fazer login' }))
         .catch(next);
 }
 
@@ -118,7 +118,7 @@ function forgotPasswordSchema(req, res, next) {
 
 function forgotPassword(req, res, next) {
     accountService.forgotPassword(req.body, req.get('origin'))
-        .then(() => res.json({ message: 'Please check your email for password reset instructions' }))
+        .then(() => res.json({ message: 'Verifique seu e-mail para obter instruções de redefinição de senha' }))
         .catch(next);
 }
 
@@ -131,7 +131,7 @@ function validateResetTokenSchema(req, res, next) {
 
 function validateResetToken(req, res, next) {
     accountService.validateResetToken(req.body)
-        .then(() => res.json({ message: 'Token is valid' }))
+        .then(() => res.json({ message: 'Token é valido' }))
         .catch(next);
 }
 
@@ -146,7 +146,7 @@ function resetPasswordSchema(req, res, next) {
 
 function resetPassword(req, res, next) {
     accountService.resetPassword(req.body)
-        .then(() => res.json({ message: 'Password reset successful, you can now login' }))
+        .then(() => res.json({ message: 'Redefinição de senha bem-sucedida, agora você pode fazer login' }))
         .catch(next);
 }
 
@@ -159,7 +159,7 @@ function getAll(req, res, next) {
 function getById(req, res, next) {
     // users can get their own account and admins can get any account
     if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Não autorizado' });
     }
 
     accountService.getById(req.params.id)
@@ -208,7 +208,7 @@ function updateSchema(req, res, next) {
 function update(req, res, next) {
     // users can update their own account and admins can update any account
     if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Não autorizado' });
     }
 
     accountService.update(req.params.id, req.body)
@@ -219,11 +219,11 @@ function update(req, res, next) {
 function _delete(req, res, next) {
     // users can delete their own account and admins can delete any account
     if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Não autorizado' });
     }
 
     accountService.delete(req.params.id)
-        .then(() => res.json({ message: 'Account deleted successfully' }))
+        .then(() => res.json({ message: 'Usuário excluído com sucesso!' }))
         .catch(next);
 }
 

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: b3-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: b3-api
+  template:
+    metadata:
+      labels:
+        app: b3-api
+    spec:
+      containers:
+        - name: b3-api-containers
+          image: us-central1-docker.pkg.dev/b3-api-354219/b3-storage/b3-api:latest
+          envFrom:
+            - configMapRef:
+                name: b3-api-configmap
+          resources:
+            requests:
+              memory: "256M"
+              cpu: "250m"
+            limits:
+              memory: "512M"
+              cpu: "500m"
+          ports:
+            - containerPort: 4000
+          readinessProbe:
+            httpGet:
+              path: "/api-docs/"
+              port: 4000
+            initialDelaySeconds: 10
+            timeoutSeconds: 5

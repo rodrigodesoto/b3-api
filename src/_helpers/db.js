@@ -1,12 +1,12 @@
-const config = require('config.json');
 const mongoose = require('mongoose');
 const connectionOptions = { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false };
-mongoose.connect(process.env.MONGODB_URI || config.connectionString, connectionOptions);
+mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URL, connectionOptions);
 mongoose.Promise = global.Promise;
 
 module.exports = {
-    Account: require('accounts/account.model'),
-    RefreshToken: require('accounts/refresh-token.model'),
+    Account: require('src/accounts/account.model'),
+    RefreshToken: require('src/accounts/refresh-token.model'),
+    Acoes: require('src/stock/acao'),
     isValidId
 };
 

@@ -1,3 +1,6 @@
+# Variáveis de ambiente
+.env
+
 # Logs
 logs
 *.log
@@ -36,3 +39,7 @@ typings
 
 # Optional REPL history
 .node_repl_history
+
+# Instruções do projeto
+instrucoes.txt
+
