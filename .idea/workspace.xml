@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="741ac8e0-eb36-4f3f-9fba-a5ad2462be4e" name="Changes" comment="" />
+    <list default="true" id="741ac8e0-eb36-4f3f-9fba-a5ad2462be4e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -109,6 +111,7 @@
       <workItem from="1668553949892" duration="6636000" />
       <workItem from="1668566307094" duration="19000" />
       <workItem from="1668566346883" duration="403000" />
+      <workItem from="1668567114060" duration="174000" />
     </task>
     <servers />
   </component>
@@ -163,11 +166,6 @@
           <url>file://$PROJECT_DIR$/src/accounts/accounts.controller.js</url>
           <line>106</line>
           <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/accounts/accounts.controller.js</url>
-          <line>34</line>
-          <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/stock/acao.service.js</url>
