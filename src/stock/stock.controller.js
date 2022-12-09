@@ -6,6 +6,8 @@ const moment = require("moment");
 const authorize = require('src/_middleware/authorize')
 // var cotacoesBovespa = require('src/cotacoes-bovespa');
 const {DateUtils} = require("../util/date-utils");
+const tickerEnum = require("../../ticker-enum");
+const stockService = require('./stock.service');
 
 router.get('/carteira', authorize(), (req, res) => {
     console.log(res.locals.auth_data);
@@ -16,9 +18,14 @@ router.post('/insereAcoes', authorize(), async (req, res) => {
     try{
         var col = codAcaoEnum;
         for(var codAcao in col) {
-            if (await Acao.findOne({codAcao})) continue;
-            const pass_ok = await salvarAcao(codAcao);
-            if(!pass_ok) return res.status(400).send({ error: 'Erro ao cadastrar cotações!'});
+            if (await Acao.findOne({codAcao})) {
+                const pass_ok = await stockService.salvarAcao(codAcao);
+                if(!pass_ok) return res.status(400).send({ error: 'Erro ao cadastrar cotações!'});
+            } else{
+                const pass_ok = await stockService.salvarAcao(codAcao);
+                if(!pass_ok) return res.status(400).send({ error: 'Erro ao atualizar cotações!'});
+            }
+
         }
         return res.status(201).
         send({message: 'Cotações salvas com sucesso!'});
@@ -26,32 +33,6 @@ router.post('/insereAcoes', authorize(), async (req, res) => {
         return res.status(500).send({ error: 'Erro no endPoint quotes!'});
     }
 });
-
-async function salvarAcao(codAcao){
-    const ret = true;
-   //  cotacoesBovespa.getCurrentQuote(codAcao, function (err, quote) {
-   //      console.log(quote.price);
-   //      const acaoCarteira = {
-   //          codAcao: codAcao,
-   //          vlrAtual: quote.price,
-   //          vlrCompra: 100,
-   //          varDia: quote.marketChange,
-   //          var30d: 6.66,
-   //          var12m: 6.66,
-   //          qtd: 10,
-   //          vlrInvest: 1000,
-   //          vlrTotal: 1000,
-   //          vlrLucro: 9.99,
-   //          prcLucro: 10,
-   //          dtAtual: new Date()
-   //  }
-   //
-   // Acao.create(acaoCarteira, (err, data) => {
-   //  if(err) ret = false;
-   //      });
-   //  });
-    return ret;
-}
 
 router.get('/stock-price/:stock', authorize(),async (req, res) => {
     let stock = req.params.stock;
