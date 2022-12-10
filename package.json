@@ -38,7 +38,8 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.3",
+    "yahoo-finance": "^0.3.7"
   },
   "bugs": {
     "url": "https://github.com/rodrigodesoto/b3-api/issues"

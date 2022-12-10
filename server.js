@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 app.use('/accounts', require('./src/accounts/accounts.controller'));
 
 // api cotações
-app.use('/quotes', require('./src/quotes/stock.controller'));
+app.use('/quotes', require('./src/stock/stock.controller'));
 
 // api ações
 // app.use('/stock', require('./src/stock/acao.controller'));

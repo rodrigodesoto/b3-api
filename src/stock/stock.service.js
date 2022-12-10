@@ -1,21 +1,22 @@
 ﻿const db = require('src/_helpers/db');
-const Acao = require("../stock/acao");
-const fetch = require("node-fetch");
+const Acao = require("./stock.model");
+// const fetch = require("node-fetch");
+let yahooFinance = require('yahoo-finance');
 
 module.exports = {
     getAll,
     create,
-    update,
+    updateStock,
     getAcao,
-    salvarAcao,
+    insertStock,
     delete: _delete
 };
 
-async function salvarAcao(codAcao){
+async function insertStock(stock){
     let ret = true;
-    await getCurrentQuote(codAcao, await function(err, quote){
+    await getCurrentQuote(stock, await function(err, quote){
         if(quote){
-            const acaoCarteira = {
+            const stock = {
                 codAcao: codAcao,
                 vlrAtual: quote.price,
                 vlrCompra: null,
@@ -30,12 +31,28 @@ async function salvarAcao(codAcao){
                 dtAtual: new Date()
             }
 
-            Acao.create(acaoCarteira, (err, data) => {
+            Acao.create(stock, (err, data) => {
                 if(err) ret = false;
             });
         }
     });
     return ret;
+}
+
+async function updateStock(stock) {
+    const acao = await getAcao(stock);
+
+    // validate (if email was changed)
+    if (await db.Account.findOne({ stock: stock })) {
+        throw 'Ação "' + stock + '" já existe';
+    }
+
+    // copy params to acao and save
+    Object.assign(stock, params);
+    acao.updated = Date.now();
+    await acao.updateOne();
+
+    return basicDetails(acao);
 }
 
 async function getCurrentQuote(ticker, callback) {
@@ -50,9 +67,15 @@ async function getCurrentQuote(ticker, callback) {
         main.context.dispatcher.stores?.QuoteSummaryStore.financialData !==
         undefined
     ) {
-        quote.price = parseFloat(
+        quote.shortName =
+            main.context.dispatcher.stores.QuoteSummaryStore.price.shortName;
+
+        quote.longName =
+            main.context.dispatcher.stores.QuoteSummaryStore.price.longName;
+
+        quote.ebitdaMargins = parseFloat(
             main.context.dispatcher.stores.QuoteSummaryStore.financialData
-                .currentPrice.fmt
+                .ebitdaMargins.fmt
         );
         // quote.price = quote.price + Math.random()
         quote.open = parseFloat(
@@ -79,10 +102,6 @@ async function getCurrentQuote(ticker, callback) {
             main.context.dispatcher.stores.QuoteSummaryStore.price
                 .regularMarketChangePercent.fmt
         );
-        quote.shortName =
-            main.context.dispatcher.stores.QuoteSummaryStore.price.shortName;
-        quote.longName =
-            main.context.dispatcher.stores.QuoteSummaryStore.price.longName;
     }
 
     callback(null, quote);
@@ -122,22 +141,6 @@ async function create(params) {
     await acoes.save();
 
     return basicDetails(acoes);
-}
-
-async function update(codAcao, params) {
-    const acao = await getAcao(codAcao);
-
-    // validate (if email was changed)
-    if (await db.Account.findOne({ codAcao: params.codAcao })) {
-        throw 'Ação "' + params.email + '" já existe';
-    }
-
-    // copy params to acao and save
-    Object.assign(acao, params);
-    acao.updated = Date.now();
-    await acao.updateOne();
-
-    return basicDetails(acao);
 }
 
 async function _delete(codAcao) {
