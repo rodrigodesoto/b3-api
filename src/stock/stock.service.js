@@ -1,7 +1,5 @@
 ﻿const db = require('src/_helpers/db');
 const Acao = require("./stock.model");
-// const fetch = require("node-fetch");
-let yahooFinance = require('yahoo-finance');
 
 module.exports = {
     getAll,
