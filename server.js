@@ -38,20 +38,22 @@ app.use((req, res, next) => {
 app.use('/accounts', require('./src/accounts/accounts.controller'));
 
 // api cotações
-app.use('/quotes', require('./src/quotes/stock.controller'));
+app.use('/quotes', require('./src/stock/stock.controller'));
 
 // api ações
 // app.use('/stock', require('./src/stock/acao.controller'));
 
 // global error handler
-app.use(errorHandler);
+// app.use(errorHandler);
+// var portAp = process.env.PORT_AP || 4000;
+// var portWs = process.env.PORT_WS || 3000;
 
 // Create an HTTP service.
-http.createServer(app).listen(process.env.PORT_AP || 4000);
-console.log('Server http listening on port ' + process.env.PORT);
+// http.createServer(app).listen(process.env.PORT || 4000);
+// console.log('Server http listening on port ' + process.env.PORT);
 
-const server = app.listen(process.env.PORT_WS || 3000, () => {
-    console.log(`WebSocket is running!`);
+const server = app.listen(process.env.PORT, () => {
+    console.log('WebSocket is running on port ' + process.env.PORT);
 })
 
 const wss = appWs(server);
@@ -69,7 +71,7 @@ setInterval(async () => {
     } catch (error) {
         return error;
     }
-}, 5000);
+}, 29000);
 
 async function getCurrentQuote(ticker, callback) {
     const response = await fetch("https://finance.yahoo.com/quote/" + ticker + ".sa/")

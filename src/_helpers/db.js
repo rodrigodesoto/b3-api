@@ -6,7 +6,7 @@ mongoose.Promise = global.Promise;
 module.exports = {
     Account: require('src/accounts/account.model'),
     RefreshToken: require('src/accounts/refresh-token.model'),
-    Acoes: require('src/stock/acao'),
+    Acoes: require('src/stock/stock.model'),
     isValidId
 };
 
