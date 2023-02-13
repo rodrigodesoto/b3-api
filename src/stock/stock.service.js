@@ -1,5 +1,6 @@
 ﻿const db = require('src/_helpers/db');
-const Acao = require("./stock.model");
+const stockModel = require("./stock.model");
+const {DateUtils} = require("../util/date-utils");
 
 module.exports = {
     getAll,
@@ -10,86 +11,53 @@ module.exports = {
     delete: _delete
 };
 
-async function insertStock(req){
-    const stockBody = req.body
+async function insertStock(stockBody){
     const stock = {
-        stock: stockBody.stock,
+        stockCode: stockBody.stockCode,
         shortName: stockBody.shortName,
         longName: stockBody.longName,
-        currentPrice: 25.5,
-        dtAtual: new Date()
+        currentPrice: stockBody.currentPrice,
+        qtd: stockBody.qtd,
+        vlBuy: stockBody.vlBuy,
+        vlTotal: stockBody.qtd* stockBody.vlBuy,
+        open: stockBody.open,
+        high: stockBody.high,
+        low: stockBody.low,
+        marketChange: stockBody.marketChange,
+        dtBuy: DateUtils.convertAnyToDate(stockBody.dtBuy),
+        dtUpdate: new Date()
     };
-    Acao.create(stock);
-    return ret;
+    try{
+        await stockModel.create(stock);
+        return stock;
+    } catch(err){
+        return err
+    }
 }
 
-async function updateStock(stock) {
-    const acao = await getAcao(stock);
-
-    // validate (if email was changed)
-    if (await db.Account.findOne({ stock: stock })) {
-        throw 'Ação "' + stock + '" já existe';
+async function updateStock(stockBody) {
+    const stock = {
+        stockCode: stockBody.stockCode,
+        shortName: stockBody.shortName,
+        longName: stockBody.longName,
+        currentPrice: stockBody.currentPrice,
+        qtd: stockBody.qtd,
+        vlBuy: stockBody.vlBuy,
+        vlTotal: stockBody.qtd* stockBody.currentPrice,
+        open: stockBody.open,
+        high: stockBody.high,
+        low: stockBody.low,
+        marketChange: stockBody.marketChange,
+        dtBuy: DateUtils.convertAnyToDate(stockBody.dtBuy),
+        dtUpdate: new Date()
+    };
+    try{
+        await stockModel.updateOne(stock);
+        return stock;
+    } catch(err){
+        return err
     }
-
-    // copy params to acao and save
-    Object.assign(stock, params);
-    acao.updated = Date.now();
-    await acao.updateOne();
-
-    return basicDetails(acao);
 }
-
-async function getCurrentQuote(ticker, callback) {
-    const response = await fetch("https://finance.yahoo.com/quote/" + ticker + ".sa/")
-    const body = await response.text();
-    const main = JSON.parse(
-        body.split("root.App.main = ")[1].split(";\n}(this));")[0]
-    );
-    let quote = {};
-
-    if (
-        main.context.dispatcher.stores?.QuoteSummaryStore.financialData !==
-        undefined
-    ) {
-        quote.shortName =
-            main.context.dispatcher.stores.QuoteSummaryStore.price.shortName;
-
-        quote.longName =
-            main.context.dispatcher.stores.QuoteSummaryStore.price.longName;
-
-        quote.ebitdaMargins = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.financialData
-                .ebitdaMargins.fmt
-        );
-        // quote.price = quote.price + Math.random()
-        quote.open = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price.regularMarketOpen
-                .fmt
-        );
-        quote.high = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price
-                .regularMarketDayHigh.fmt
-        );
-        quote.low = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price
-                .regularMarketDayLow.fmt
-        );
-        quote.previousClose = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price
-                .regularMarketPreviousClose.fmt
-        );
-        quote.volume = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price
-                .regularMarketVolume.fmt
-        );
-        quote.marketChange = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price
-                .regularMarketChangePercent.fmt
-        );
-    }
-
-    callback(null, quote);
-};
 
 async function getAcao(codAcao) {
     const acao = await db.Stock.findOne({ stock: codAcao });
@@ -132,9 +100,9 @@ async function _delete(codAcao) {
     await acao.remove();
 }
 
-function basicDetails(account) {
-    const { codAcao, vlrAtual, vlrCompra, varDia, var30d, var12m, qtd, vlrInvest, vlrTotal, vlrLucro, prcLucro, dtAtual} = acao;
-    return { codAcao, vlrAtual, vlrCompra, varDia, var30d, var12m, qtd, vlrInvest, vlrTotal, vlrLucro, prcLucro, dtAtual};
+function basicDetails(stock) {
+    const { stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, dtBuy, dtUpdate} = stock;
+    return { stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, dtBuy, dtUpdate};
 }
 
 

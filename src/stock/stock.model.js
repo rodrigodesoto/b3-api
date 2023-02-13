@@ -2,13 +2,20 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const StockSchema = new Schema({
-    stock: { type: String, required: true, unique: true, upercase: true },
+    stockCode: { type: String, required: true, unique: true, upercase: true },
     shortName: { type: String, required: true, unique: true, upercase: true },
     longName: { type: String, required: false, unique: true, upercase: true },
-    ebitdaMargins: { type: Number, required: false},
-    profitMargins: { type: Number, required: false},
-    grossMargins: { type: Number, required: false},
-    operatingCashflow: { type: Number, required: false},
+    currentPrice: { type: Number, required: true},
+    qtd: { type: Number, required: true},
+    vlBuy: { type: Number, required: true},
+    vlTotal: { type: Number, required: true},
+    dtBuy: { type: Date, default: Date.now, required: true},
+    dtUpdate: { type: Date, default: Date.now, required: true},
+
+    open: { type: Number, required: false},
+    high: { type: Number, required: false},
+    low: { type: Number, required: false},
+    marketChange: { type: Number, required: false},
     revenueGrowth: { type: Number, required: false},
     operatingMargins: { type: Number, required: false},
     ebitda: { type: Number, required: false},
@@ -17,7 +24,6 @@ const StockSchema = new Schema({
     grossProfits: { type: Number, required: false},
     freeCashflow: { type: Number, required: false},
     targetMedianPrice: { type: Number, required: false},
-    currentPrice: { type: Number, required: true},
     earningsGrowth: { type: Number, required: false},
     currentRatio: { type: Number, required: false},
     returnOnAssets: { type: Number, required: false},
@@ -35,12 +41,8 @@ const StockSchema = new Schema({
     recommendationMean: { type: Number, required: false},
     var30d: { type: Number, required: false},
     var12m: { type: Number, required: false},
-    qtd: { type: Number, required: false},
-    vlrInvest: { type: Number, required: false},
-    vlrTotal: { type: Number, required: false},
-    vlrLucro: { type: Number, required: false},
-    prcLucro: { type: Number, required: false},
-    dtAtual: { type: Date, default: Date.now, required: true}
+    vlYeld: { type: Number, required: false},
+    prcYeld: { type: Number, required: false}
 });
 
 

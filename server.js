@@ -1,8 +1,6 @@
-﻿// import { initializeApp } from 'firebase/app'
-require('rootpath')();
+﻿require('rootpath')();
 require('dotenv').config();
 const express = require('express');
-const app = express();
 const appWs = require('./server-ws');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -17,6 +15,7 @@ var fetch = require("node-fetch");
 var tickerEnum = require('./ticker-enum');
 const yahooFinance = require ('yahoo-finance2').default;
 
+const app = express();
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -40,18 +39,6 @@ app.use('/accounts', require('./src/accounts/accounts.controller'));
 
 // api cotações
 app.use('/quotes', require('./src/stock/stock.controller'));
-
-// api ações
-// app.use('/stock', require('./src/stock/acao.controller'));
-
-// global error handler
-// app.use(errorHandler);
-// var portAp = process.env.PORT_AP || 4000;
-// var portWs = process.env.PORT_WS || 3000;
-
-// Create an HTTP service.
-// http.createServer(app).listen(process.env.PORT || 4000);
-// console.log('Server http listening on port ' + process.env.PORT);
 
 const server = app.listen(process.env.PORT, () => {
     console.log('WebSocket is running on port ' + process.env.PORT);
@@ -100,3 +87,4 @@ async function getCurrentQuote(ticker, callback) {
 };
 
 module.exports = app;
+

@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const codAcaoEnum = require('../config/codAcao');
-const Acao = require('./stock.model');
+const stockModel = require('./stock.model');
 const moment = require("moment");
 const authorize = require('src/_middleware/authorize')
-// var cotacoesBovespa = require('src/cotacoes-bovespa');
 const {DateUtils} = require("../util/date-utils");
-const tickerEnum = require("../../ticker-enum");
 const stockService = require('./stock.service');
+const {default: yahooFinance} = require("yahoo-finance2");
 
 // router.get('/carteira', authorize(), insertUpdateStock);
 router.post('/insertStock', authorize(), insertUpdateStock);
@@ -19,22 +17,62 @@ router.get('/carteira', authorize(), (req, res) => {
 
 async function insertUpdateStock(req, res) {
     try{
-        // var col = codAcaoEnum;
-        // for(var codAcao in col) {
-        //     if (await Acao.findOne({codAcao})) {
-        //         const pass_ok = await stockService.updateStock(codAcao);
-        //         if(!pass_ok) return res.status(400).send({ error: 'Erro ao atualizar cotações!'});
-        //     } else{
-        //         const pass_ok = await stockService.insertStock(codAcao);
-        //         if(!pass_ok) return res.status(400).send({ error: 'Erro ao cadastrar cotações!'});
-        //     }
-        //
-        // }
-        await stockService.insertStock(req);
+        const stockBody = req.body
+        const stock = await stockModel.findOne({stockCode: stockBody.stockCode.toString()})
+            if (stock) {
+                await getCurrentQuote(stockBody.stockCode, await function(err, quote){
+                    if(quote){
+                        stockBody.currentPrice = quote.price
+                        stockBody.open = quote.open
+                        stockBody.high = quote.high
+                        stockBody.low = quote.low
+                        stockBody.marketChange = quote.marketChange
+                    }
+                });
+                const pass_ok = await stockService.updateStock(stockBody);
+                if(pass_ok.errors) return res.status(400).send({ error: pass_ok.errors});
+            } else{
+                await getCurrentQuote(stockBody.stockCode, await function(err, quote){
+                    if(quote){
+                        stockBody.currentPrice = quote.price
+                        stockBody.open = quote.open
+                        stockBody.high = quote.high
+                        stockBody.low = quote.low
+                        stockBody.marketChange = quote.marketChange
+                    }
+                });
+                const pass_ok = await stockService.insertStock(stockBody);
+                if(pass_ok.errors) return res.status(400).send({ error: pass_ok.errors});
+            }
         return res.status(201).
-        send({message: 'Cotações salvas com sucesso!'});
+        send({message: stockBody.stockCode.toString() + ' salvo com sucesso!'});
     }catch(err){
-        return res.status(500).send({ error: 'Erro no endPoint quotes!'});
+        return res.status(500).send({ error: err});
+    }
+};
+
+async function getCurrentQuote(ticker, callback) {
+    try {
+        let quote = {}
+        const queryOptions = { modules: ['price', 'summaryDetail'] }; // defaults
+        const quoteTicker = await yahooFinance.quoteSummary(ticker+'.SA', queryOptions);
+        console.log(quoteTicker);
+        if (quoteTicker !== undefined) {
+            quote.price = quoteTicker.price.regularMarketPrice;
+            // quote.price = quote.price + Math.random()
+            quote.open = quoteTicker.price.regularMarketOpen;
+            quote.high = quoteTicker.price.regularMarketDayHigh;
+            quote.low = quoteTicker.price.regularMarketDayLow;
+            quote.previousClose = quoteTicker.price.regularMarketPreviousClose;
+            quote.volume = quoteTicker.summaryDetail.averageVolume;
+            quote.marketChange = parseFloat(quoteTicker.price.regularMarketChangePercent*100).toPrecision(2);
+            quote.shortName = quoteTicker.price.shortName;
+            quote.longName = quoteTicker.price.longName;
+        }
+
+        callback(null, quote);
+    } catch (error) {
+        return error;
     }
 };
 
