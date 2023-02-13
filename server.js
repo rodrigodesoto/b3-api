@@ -15,6 +15,7 @@ const swaggerFile = require('./swagger/swagger_output.json');
 const swaggerUi = require('swagger-ui-express');
 var fetch = require("node-fetch");
 var tickerEnum = require('./ticker-enum');
+const yahooFinance = require ('yahoo-finance2').default;
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -74,53 +75,28 @@ setInterval(async () => {
 }, 29000);
 
 async function getCurrentQuote(ticker, callback) {
-    const response = await fetch("https://finance.yahoo.com/quote/" + ticker + ".sa/")
-    const body = await response.text();
-    const main = JSON.parse(
-        body.split("root.App.main = ")[1].split(";\n}(this));")[0]
-    );
-    let quote = {};
+    try {
+        let quote = {}
+        const queryOptions = { modules: ['price', 'summaryDetail'] }; // defaults
+        const quoteTicker = await yahooFinance.quoteSummary(ticker+'.SA', queryOptions);
+        console.log(quoteTicker);
+        if (quoteTicker !== undefined) {
+            quote.price = quoteTicker.price.regularMarketPrice;
+            // quote.price = quote.price + Math.random()
+            quote.open = quoteTicker.price.regularMarketOpen;
+            quote.high = quoteTicker.price.regularMarketDayHigh;
+            quote.low = quoteTicker.price.regularMarketDayLow;
+            quote.previousClose = quoteTicker.price.regularMarketPreviousClose;
+            quote.volume = quoteTicker.summaryDetail.averageVolume;
+            quote.marketChange = parseFloat(quoteTicker.price.regularMarketChangePercent*100).toPrecision(2);
+            quote.shortName = quoteTicker.price.shortName;
+            quote.longName = quoteTicker.price.longName;
+        }
 
-    if (
-        main.context.dispatcher.stores?.QuoteSummaryStore.financialData !==
-        undefined
-    ) {
-        quote.price = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.financialData
-                .currentPrice.fmt
-        );
-        // quote.price = quote.price + Math.random()
-        quote.open = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price.regularMarketOpen
-                .fmt
-        );
-        quote.high = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price
-                .regularMarketDayHigh.fmt
-        );
-        quote.low = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price
-                .regularMarketDayLow.fmt
-        );
-        quote.previousClose = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price
-                .regularMarketPreviousClose.fmt
-        );
-        quote.volume = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price
-                .regularMarketVolume.fmt
-        );
-        quote.marketChange = parseFloat(
-            main.context.dispatcher.stores.QuoteSummaryStore.price
-                .regularMarketChangePercent.fmt
-        );
-        quote.shortName =
-            main.context.dispatcher.stores.QuoteSummaryStore.price.shortName;
-        quote.longName =
-            main.context.dispatcher.stores.QuoteSummaryStore.price.longName;
+        callback(null, quote);
+    } catch (error) {
+        return error;
     }
-
-    callback(null, quote);
 };
 
 module.exports = app;

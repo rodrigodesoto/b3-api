@@ -9,8 +9,8 @@ const {DateUtils} = require("../util/date-utils");
 const tickerEnum = require("../../ticker-enum");
 const stockService = require('./stock.service');
 
-router.get('/carteira', authorize(), insertUpdateStock);
-// router.post('/insertStock', authorize(), createSchema, create);
+// router.get('/carteira', authorize(), insertUpdateStock);
+router.post('/insertStock', authorize(), insertUpdateStock);
 
 router.get('/carteira', authorize(), (req, res) => {
     console.log(res.locals.auth_data);
@@ -19,17 +19,18 @@ router.get('/carteira', authorize(), (req, res) => {
 
 async function insertUpdateStock(req, res) {
     try{
-        var col = codAcaoEnum;
-        for(var codAcao in col) {
-            if (await Acao.findOne({codAcao})) {
-                const pass_ok = await stockService.insertStock(codAcao);
-                if(!pass_ok) return res.status(400).send({ error: 'Erro ao cadastrar cotações!'});
-            } else{
-                const pass_ok = await stockService.updateStock(codAcao);
-                if(!pass_ok) return res.status(400).send({ error: 'Erro ao atualizar cotações!'});
-            }
-
-        }
+        // var col = codAcaoEnum;
+        // for(var codAcao in col) {
+        //     if (await Acao.findOne({codAcao})) {
+        //         const pass_ok = await stockService.updateStock(codAcao);
+        //         if(!pass_ok) return res.status(400).send({ error: 'Erro ao atualizar cotações!'});
+        //     } else{
+        //         const pass_ok = await stockService.insertStock(codAcao);
+        //         if(!pass_ok) return res.status(400).send({ error: 'Erro ao cadastrar cotações!'});
+        //     }
+        //
+        // }
+        await stockService.insertStock(req);
         return res.status(201).
         send({message: 'Cotações salvas com sucesso!'});
     }catch(err){

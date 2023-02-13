@@ -10,30 +10,16 @@ module.exports = {
     delete: _delete
 };
 
-async function insertStock(stock){
-    let ret = true;
-    await getCurrentQuote(stock, await function(err, quote){
-        if(quote){
-            const stock = {
-                codAcao: codAcao,
-                vlrAtual: quote.price,
-                vlrCompra: null,
-                varDia: quote.marketChange,
-                var30d: null,
-                var12m: null,
-                qtd: null,
-                vlrInvest: null,
-                vlrTotal: null,
-                vlrLucro: null,
-                prcLucro: null,
-                dtAtual: new Date()
-            }
-
-            Acao.create(stock, (err, data) => {
-                if(err) ret = false;
-            });
-        }
-    });
+async function insertStock(req){
+    const stockBody = req.body
+    const stock = {
+        stock: stockBody.stock,
+        shortName: stockBody.shortName,
+        longName: stockBody.longName,
+        currentPrice: 25.5,
+        dtAtual: new Date()
+    };
+    Acao.create(stock);
     return ret;
 }
 
@@ -106,19 +92,19 @@ async function getCurrentQuote(ticker, callback) {
 };
 
 async function getAcao(codAcao) {
-    const acao = await db.Acoes.findOne({ codAcao: codAcao });
+    const acao = await db.Stock.findOne({ stock: codAcao });
     if (!acao) throw 'Ação não encontrada!';
     return acao;
 }
 
 async function getAll() {
-    const acoes = await db.Acoes.find();
+    const acoes = await db.Stock.find();
     return acoes.map(x => basicDetails(x));
 }
 
 async function create(params) {
     // validate
-    if (await db.Acoes.findOne({ codAcao: params.codAcao })) {
+    if (await db.Stock.findOne({ codAcao: params.codAcao })) {
         throw 'Ação "' + params.codAcao + '" já está registrada!';
     }
 
