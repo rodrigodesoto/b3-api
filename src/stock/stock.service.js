@@ -66,8 +66,8 @@ async function getAcao(codAcao) {
 }
 
 async function getAll() {
-    const acoes = await db.Stock.find();
-    return acoes.map(x => basicDetails(x));
+    const stocks = await db.Stock.find();
+    return stocks.map(x => basicDetails(x));
 }
 
 async function create(params) {
@@ -101,8 +101,8 @@ async function _delete(codAcao) {
 }
 
 function basicDetails(stock) {
-    const { stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, dtBuy, dtUpdate} = stock;
-    return { stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, dtBuy, dtUpdate};
+    const { stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate} = stock;
+    return { stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate};
 }
 
 

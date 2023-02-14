@@ -6,9 +6,11 @@ const authorize = require('src/_middleware/authorize')
 const {DateUtils} = require("../util/date-utils");
 const stockService = require('./stock.service');
 const {default: yahooFinance} = require("yahoo-finance2");
+const accountService = require("../accounts/account.service");
 
 // router.get('/carteira', authorize(), insertUpdateStock);
 router.post('/insertStock', authorize(), insertUpdateStock);
+router.get('/getAllStocks', authorize(), getAllStocks);
 
 router.get('/carteira', authorize(), (req, res) => {
     console.log(res.locals.auth_data);
@@ -30,7 +32,7 @@ async function insertUpdateStock(req, res) {
                     }
                 });
                 const pass_ok = await stockService.updateStock(stockBody);
-                if(pass_ok.errors) return res.status(400).send({ error: pass_ok.errors});
+                if(pass_ok.errors || pass_ok.name == 'MongoError') return res.status(400).send({ error: pass_ok.errors==undefined?pass_ok.stack:pass_ok.errors});
             } else{
                 await getCurrentQuote(stockBody.stockCode, await function(err, quote){
                     if(quote){
@@ -42,7 +44,7 @@ async function insertUpdateStock(req, res) {
                     }
                 });
                 const pass_ok = await stockService.insertStock(stockBody);
-                if(pass_ok.errors) return res.status(400).send({ error: pass_ok.errors});
+                if(pass_ok.errors || pass_ok.name == 'MongoError') return res.status(400).send({ error: pass_ok.errors==undefined?pass_ok.stack:pass_ok.errors});
             }
         return res.status(201).
         send({message: stockBody.stockCode.toString() + ' salvo com sucesso!'});
@@ -50,6 +52,12 @@ async function insertUpdateStock(req, res) {
         return res.status(500).send({ error: err});
     }
 };
+
+async function getAllStocks(req, res, next) {
+    stockService.getAll()
+        .then(stocks => res.json(stocks))
+        .catch(next);
+}
 
 async function getCurrentQuote(ticker, callback) {
     try {
