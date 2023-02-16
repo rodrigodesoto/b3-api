@@ -7,11 +7,8 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const errorHandler = require('src/_middleware/error-handler');
-const http = require('http');
 const swaggerFile = require('./swagger/swagger_output.json');
 const swaggerUi = require('swagger-ui-express');
-var fetch = require("node-fetch");
 var tickerEnum = require('./ticker-enum');
 const yahooFinance = require ('yahoo-finance2').default;
 
@@ -38,7 +35,7 @@ app.use((req, res, next) => {
 app.use('/accounts', require('./src/accounts/accounts.controller'));
 
 // api cotações
-app.use('/quotes', require('./src/stock/stock.controller'));
+app.use('/stocks', require('./src/stock/stock.controller'));
 
 const server = app.listen(process.env.PORT, () => {
     console.log('WebSocket is running on port ' + process.env.PORT);
@@ -85,6 +82,5 @@ async function getCurrentQuote(ticker, callback) {
         return error;
     }
 };
-
 module.exports = app;
 

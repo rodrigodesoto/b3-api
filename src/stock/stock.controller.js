@@ -3,14 +3,12 @@ const router = express.Router();
 const stockModel = require('./stock.model');
 const moment = require("moment");
 const authorize = require('src/_middleware/authorize')
-const {DateUtils} = require("../util/date-utils");
 const stockService = require('./stock.service');
 const {default: yahooFinance} = require("yahoo-finance2");
-const accountService = require("../accounts/account.service");
 
-// router.get('/carteira', authorize(), insertUpdateStock);
 router.post('/insertStock', authorize(), insertUpdateStock);
 router.get('/getAllStocks', authorize(), getAllStocks);
+router.get('/:id', authorize(), getById);
 
 router.get('/carteira', authorize(), (req, res) => {
     console.log(res.locals.auth_data);
@@ -56,6 +54,12 @@ async function insertUpdateStock(req, res) {
 async function getAllStocks(req, res, next) {
     stockService.getAll()
         .then(stocks => res.json(stocks))
+        .catch(next);
+}
+
+function getById(req, res, next) {
+    stockService.getById(req.params.id)
+        .then(stock => stock ? res.json(stock) : res.sendStatus(404))
         .catch(next);
 }
 

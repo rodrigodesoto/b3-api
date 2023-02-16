@@ -6,7 +6,7 @@ module.exports = {
     getAll,
     create,
     updateStock,
-    getAcao,
+    getById,
     insertStock,
     delete: _delete
 };
@@ -68,6 +68,18 @@ async function getAcao(codAcao) {
 async function getAll() {
     const stocks = await db.Stock.find();
     return stocks.map(x => basicDetails(x));
+}
+
+async function getById(id) {
+    const stock = await getStock(id);
+    return basicDetails(stock);
+}
+
+async function getStock(id) {
+    if (!db.isValidId(id)) throw 'Id da ação não encontrado!';
+    const stock = await db.Stock.findById(id);
+    if (!stock) throw 'Ação não encontrada!';
+    return stock;
 }
 
 async function create(params) {
