@@ -9,6 +9,7 @@ const {default: yahooFinance} = require("yahoo-finance2");
 router.post('/insertStock', authorize(), insertUpdateStock);
 router.get('/getAllStocks', authorize(), getAllStocks);
 router.get('/:id', authorize(), getById);
+router.delete('/:id', authorize(), _delete);
 
 router.get('/carteira', authorize(), (req, res) => {
     console.log(res.locals.auth_data);
@@ -60,6 +61,12 @@ async function getAllStocks(req, res, next) {
 function getById(req, res, next) {
     stockService.getById(req.params.id)
         .then(stock => stock ? res.json(stock) : res.sendStatus(404))
+        .catch(next);
+}
+
+function _delete(req, res, next) {
+    stockService.delete(req.params.id)
+        .then(() => res.json({ message: 'Ação excluída com sucesso!' }))
         .catch(next);
 }
 

@@ -59,8 +59,8 @@ async function updateStock(stockBody) {
     }
 }
 
-async function getAcao(codAcao) {
-    const acao = await db.Stock.findOne({ stock: codAcao });
+async function getAcao(id) {
+    const acao = await db.Stock.findById(id );
     if (!acao) throw 'Ação não encontrada!';
     return acao;
 }
@@ -107,14 +107,14 @@ async function create(params) {
     return basicDetails(acoes);
 }
 
-async function _delete(codAcao) {
-    const acao = await getAcao(codAcao);
+async function _delete(id) {
+    const acao = await getAcao(id);
     await acao.remove();
 }
 
 function basicDetails(stock) {
-    const { stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate} = stock;
-    return { stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate};
+    const { id, stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate} = stock;
+    return { id, stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate};
 }
 
 
