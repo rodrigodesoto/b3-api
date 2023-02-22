@@ -7,6 +7,7 @@ const stockService = require('./stock.service');
 const {default: yahooFinance} = require("yahoo-finance2");
 
 router.post('/insertStock', authorize(), insertUpdateStock);
+router.put('/:id', authorize(), insertUpdateStock);
 router.get('/getAllStocks', authorize(), getAllStocks);
 router.get('/:id', authorize(), getById);
 router.delete('/:id', authorize(), _delete);
@@ -30,7 +31,7 @@ async function insertUpdateStock(req, res) {
                         stockBody.marketChange = quote.marketChange
                     }
                 });
-                const pass_ok = await stockService.updateStock(stockBody);
+                const pass_ok = await stockService.updateStock(stockBody, stock);
                 if(pass_ok.errors || pass_ok.name == 'MongoError') return res.status(400).send({ error: pass_ok.errors==undefined?pass_ok.stack:pass_ok.errors});
             } else{
                 await getCurrentQuote(stockBody.stockCode, await function(err, quote){

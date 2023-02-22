@@ -43,20 +43,20 @@ const server = app.listen(process.env.PORT, () => {
 
 const wss = appWs(server);
 
-setInterval(async () => {
-    try {
-        for (let i = 0; i < Object.keys(tickerEnum).length; i++) {
-            await getCurrentQuote(Object.keys(tickerEnum)[i].toString(), await function(err, quote){
-                if(quote){
-                    wss.broadcast({ id: i, ticker: Object.keys(tickerEnum)[i].toString() , quote: quote });
-                    console.log({id: i, ticker: Object.keys(tickerEnum)[i].toString(), quote: quote});
-                }
-            });
-        }
-    } catch (error) {
-        return error;
-    }
-}, 29000);
+// setInterval(async () => {
+//     try {
+//         for (let i = 0; i < Object.keys(tickerEnum).length; i++) {
+//             await getCurrentQuote(Object.keys(tickerEnum)[i].toString(), await function(err, quote){
+//                 if(quote){
+//                     wss.broadcast({ id: i, ticker: Object.keys(tickerEnum)[i].toString() , quote: quote });
+//                     console.log({id: i, ticker: Object.keys(tickerEnum)[i].toString(), quote: quote});
+//                 }
+//             });
+//         }
+//     } catch (error) {
+//         return error;
+//     }
+// }, 29000);
 
 async function getCurrentQuote(ticker, callback) {
     try {

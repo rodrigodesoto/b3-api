@@ -15,7 +15,7 @@ async function insertStock(stockBody){
     const stock = {
         stockCode: stockBody.stockCode,
         shortName: stockBody.shortName,
-        longName: stockBody.longName,
+        longName: stockBody.longName == undefined?stockBody.shortName:stockBody.longName,
         currentPrice: stockBody.currentPrice,
         qtd: stockBody.qtd,
         vlBuy: stockBody.vlBuy,
@@ -35,11 +35,11 @@ async function insertStock(stockBody){
     }
 }
 
-async function updateStock(stockBody) {
+async function updateStock(stockBody, stockMongo) {
     const stock = {
         stockCode: stockBody.stockCode,
         shortName: stockBody.shortName,
-        longName: stockBody.longName,
+        // longName: stockBody.longName,
         currentPrice: stockBody.currentPrice,
         qtd: stockBody.qtd,
         vlBuy: stockBody.vlBuy,
@@ -52,7 +52,8 @@ async function updateStock(stockBody) {
         dtUpdate: new Date()
     };
     try{
-        await stockModel.updateOne(stock);
+        Object.assign(stockMongo, stockBody);
+        await stockMongo.save();
         return stock;
     } catch(err){
         return err
