@@ -216,14 +216,14 @@ function update(req, res, next) {
         .catch(next);
 }
 
-function _delete(req, res, next) {
+async function _delete(req, res, next) {
     // users can delete their own account and admins can delete any account
     if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Não autorizado' });
+        return res.status(401).json({message: 'Não autorizado'});
     }
 
-    accountService.delete(req.params.id)
-        .then(() => res.json({ message: 'Usuário excluído com sucesso!' }))
+    await accountService.delete(req.params.id)
+        .then(() => res.json({message: 'Usuário excluído com sucesso!'}))
         .catch(next);
 }
 

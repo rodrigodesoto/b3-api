@@ -13,7 +13,7 @@ module.exports = {
 
 async function insertStock(stockBody){
     const stock = {
-        stockCode: stockBody.stockCode,
+        stockCode: stockBody.stockCode.toUpperCase(),
         shortName: stockBody.shortName,
         longName: stockBody.longName == undefined?stockBody.shortName:stockBody.longName,
         currentPrice: stockBody.currentPrice,
@@ -36,44 +36,45 @@ async function insertStock(stockBody){
 }
 
 async function updateStock(stockBody, stockMongo) {
-    const stock = {
-        stockCode: stockBody.stockCode,
-        shortName: stockBody.shortName,
-        // longName: stockBody.longName,
-        currentPrice: stockBody.currentPrice,
-        qtd: stockBody.qtd,
-        vlBuy: stockBody.vlBuy,
-        vlTotal: stockBody.qtd* stockBody.currentPrice,
-        open: stockBody.open,
-        high: stockBody.high,
-        low: stockBody.low,
-        marketChange: stockBody.marketChange,
-        dtBuy: DateUtils.convertAnyToDate(stockBody.dtBuy),
-        dtUpdate: new Date()
-    };
+        stockMongo.id = stockBody.id,
+        stockMongo.shortName = stockBody.shortName,
+        stockMongo.currentPrice = stockBody.currentPrice,
+        stockMongo.qtd = stockBody.qtd,
+        stockMongo.vlBuy = stockBody.vlBuy,
+        stockMongo.vlTotal = stockBody.qtd* stockBody.currentPrice,
+        stockMongo.open = stockBody.open,
+        stockMongo.high = stockBody.high,
+        stockMongo.low = stockBody.low,
+        stockMongo.marketChange = stockBody.marketChange,
+        stockMongo.dtUpdate = new Date()
+
     try{
         Object.assign(stockMongo, stockBody);
         await stockMongo.save();
-        return stock;
+        return basicDetails(stockMongo);
     } catch(err){
         return err
     }
 }
 
-async function getAcao(id) {
-    const acao = await db.Stock.findById(id );
-    if (!acao) throw 'Ação não encontrada!';
-    return acao;
-}
-
-async function getAll() {
-    const stocks = await db.Stock.find();
-    return stocks.map(x => basicDetails(x));
-}
-
 async function getById(id) {
     const stock = await getStock(id);
-    return basicDetails(stock);
+    const stockReturn = {
+        id: stock.id,
+        stockCode: stock.stockCode,
+        shortName: stock.shortName,
+        currentPrice: stock.currentPrice,
+        qtd: stock.qtd,
+        vlBuy: stock.vlBuy,
+        vlTotal: stock.vlTotal,
+        open: stock.open,
+        high: stock.high,
+        low: stock.low,
+        marketChange: stock.marketChange,
+        dtBuy: DateUtils.dateToStringYear(stock.dtBuy),
+        dtUpdate: stock.dtUpdate
+    }
+    return stockReturn;
 }
 
 async function getStock(id) {
@@ -111,6 +112,16 @@ async function create(params) {
 async function _delete(id) {
     const acao = await getAcao(id);
     await acao.remove();
+}
+async function getAcao(id) {
+    const acao = await db.Stock.findById(id );
+    if (!acao) throw 'Ação não encontrada!';
+    return acao;
+}
+
+async function getAll() {
+    const stocks = await db.Stock.find();
+    return stocks.map(x => basicDetails(x));
 }
 
 function basicDetails(stock) {

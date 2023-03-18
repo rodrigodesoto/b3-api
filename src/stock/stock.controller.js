@@ -17,37 +17,48 @@ router.get('/carteira', authorize(), (req, res) => {
     return res.send({message: 'Aqui é para buscar as cotações!'});
 });
 
-async function insertUpdateStock(req, res) {
+async function insertUpdateStock(req, res, next) {
     try{
         const stockBody = req.body
-        const stock = await stockModel.findOne({stockCode: stockBody.stockCode.toString()})
-            if (stock) {
-                await getCurrentQuote(stockBody.stockCode, await function(err, quote){
-                    if(quote){
-                        stockBody.currentPrice = quote.price
-                        stockBody.open = quote.open
-                        stockBody.high = quote.high
-                        stockBody.low = quote.low
-                        stockBody.marketChange = quote.marketChange
-                    }
-                });
-                const pass_ok = await stockService.updateStock(stockBody, stock);
-                if(pass_ok.errors || pass_ok.name == 'MongoError') return res.status(400).send({ error: pass_ok.errors==undefined?pass_ok.stack:pass_ok.errors});
-            } else{
-                await getCurrentQuote(stockBody.stockCode, await function(err, quote){
-                    if(quote){
-                        stockBody.currentPrice = quote.price
-                        stockBody.open = quote.open
-                        stockBody.high = quote.high
-                        stockBody.low = quote.low
-                        stockBody.marketChange = quote.marketChange
-                    }
-                });
-                const pass_ok = await stockService.insertStock(stockBody);
-                if(pass_ok.errors || pass_ok.name == 'MongoError') return res.status(400).send({ error: pass_ok.errors==undefined?pass_ok.stack:pass_ok.errors});
+        const id = req.params.id
+        // const stock = await stockModel.findOne({stockCode: stockBody.stockCode.toString()})
+        const stock = await stockModel.findById(id)
+        if (stock) {
+            await getCurrentQuote(stockBody.stockCode, await function(err, quote){
+                if(quote){
+                    stockBody.id = id
+                    stockBody.currentPrice = quote.price
+                    stockBody.open = quote.open
+                    stockBody.high = quote.high
+                    stockBody.low = quote.low
+                    stockBody.marketChange = quote.marketChange
+                    stockBody.shortName = quote.shortName
+                }
+            });
+            const stockReturn = await stockService.updateStock(stockBody, stock)
+                .then(stock => res.json(stock))
+                .catch(next);
+            return stockReturn;
+        } else {
+            await getCurrentQuote(stockBody.stockCode, await function(err, quote){
+                if(quote){
+                    stockBody.currentPrice = quote.price
+                    stockBody.open = quote.open
+                    stockBody.high = quote.high
+                    stockBody.low = quote.low
+                    stockBody.marketChange = quote.marketChange
+                    stockBody.shortName = quote.shortName
+                }
+            });
+            const pass_ok = await stockService.insertStock(stockBody);
+            if(pass_ok.errors || pass_ok.name == 'MongoError') {
+                const erro = { error: pass_ok.errors==undefined?pass_ok.stack:pass_ok.errors}
+                const retorno = res.status(400).send(erro);
+                return erro
             }
-        return res.status(201).
-        send({message: stockBody.stockCode.toString() + ' salvo com sucesso!'});
+            return res.status(201).
+            send({message: stockBody.stockCode.toString() + ' salvo com sucesso!'});
+        }
     }catch(err){
         return res.status(500).send({ error: err});
     }
