@@ -23,7 +23,7 @@ async function insertStock(stockBody){
         open: stockBody.open,
         high: stockBody.high,
         low: stockBody.low,
-        marketChange: stockBody.marketChange,
+        marketChange: stockBody?.marketChange == undefined ? 0:stockBody?.marketChange,
         dtBuy: DateUtils.convertAnyToDate(stockBody.dtBuy),
         dtUpdate: new Date()
     };
@@ -45,7 +45,7 @@ async function updateStock(stockBody, stockMongo) {
         stockMongo.open = stockBody.open,
         stockMongo.high = stockBody.high,
         stockMongo.low = stockBody.low,
-        stockMongo.marketChange = stockBody.marketChange,
+        stockMongo.marketChange = stockBody?.marketChange,
         stockMongo.dtUpdate = new Date()
 
     try{
