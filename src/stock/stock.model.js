@@ -19,7 +19,9 @@ const StockSchema = new Schema({
     var30d: { type: Number, required: false},
     var12m: { type: Number, required: false},
     vlYeld: { type: Number, required: false},
-    prcYeld: { type: Number, required: false}
+    prcYeld: { type: Number, required: false},
+    advfnCode: { type: String, required: true, unique: true, upercase: false},
+    order: { type: Number, required: true, unique: true}
 });
 
 

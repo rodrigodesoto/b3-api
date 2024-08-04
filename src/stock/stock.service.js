@@ -46,7 +46,9 @@ async function updateStock(stockBody, stockMongo) {
         stockMongo.high = stockBody.high,
         stockMongo.low = stockBody.low,
         stockMongo.marketChange = stockBody?.marketChange,
-        stockMongo.dtUpdate = new Date()
+        stockMongo.dtUpdate = new Date(),
+        stockMongo.order = stockBody.order,
+        stockMongo.advfnCode = stockBody.advfnCode
 
     try{
         Object.assign(stockMongo, stockBody);
@@ -72,7 +74,9 @@ async function getById(id) {
         low: stock.low,
         marketChange: stock.marketChange,
         dtBuy: DateUtils.dateToStringYear(stock.dtBuy),
-        dtUpdate: stock.dtUpdate
+        dtUpdate: stock.dtUpdate,
+        order: stock.order,
+        advfnCode: stock.advfnCode
     }
     return stockReturn;
 }
@@ -102,6 +106,8 @@ async function create(params) {
     acoes.vlrTotal = params.vlrTotal;
     acoes.vlrLucro = params.vlrLucro;
     acoes.prcLucro = params.prcLucro;
+    acoes.order = params.order;
+    acoes.advfnCode = params.advfnCode;
 
     // save ação
     await acoes.save();
@@ -121,12 +127,14 @@ async function getAcao(id) {
 
 async function getAll() {
     const stocks = await db.Stock.find();
-    return stocks.map(x => basicDetails(x));
+    const stocksModel = stocks.map(x => basicDetails(x));
+    const stockOrder = stocksModel.sort((a, b) => a.order - b.order);
+    return stockOrder;
 }
 
 function basicDetails(stock) {
-    const { id, stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate} = stock;
-    return { id, stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate};
+    const { id, stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate, advfnCode, order} = stock;
+    return { id, stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate, advfnCode, order};
 }
 
 

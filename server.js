@@ -9,8 +9,10 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const swaggerFile = require('./swagger/swagger_output.json');
 const swaggerUi = require('swagger-ui-express');
-var tickerEnum = require('./ticker-enum');
-const yahooFinance = require ('yahoo-finance2').default;
+const ticker = require ('./src/stock/stock.service');
+const url = '/api/quote/';
+const https = require('https');
+
 
 const app = express();
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
@@ -44,12 +46,14 @@ const server = app.listen(process.env.PORT, () => {
 const wss = appWs(server);
 
 // setInterval(async () => {
+//     const tickers = await ticker.getAll()
+
 //     try {
-//         for (let i = 0; i < Object.keys(tickerEnum).length; i++) {
-//             await getCurrentQuote(Object.keys(tickerEnum)[i].toString(), await function(err, quote){
+//         for (let i = 0; i < Object.keys(tickers).length; i++) {
+//             await getCurrentQuote(tickers[i].stockCode, await function(err, quote){
 //                 if(quote){
-//                     wss.broadcast({ id: i, ticker: Object.keys(tickerEnum)[i].toString() , quote: quote });
-//                     console.log({id: i, ticker: Object.keys(tickerEnum)[i].toString(), quote: quote});
+//                     wss.broadcast({ id: i, ticker: tickers[i].stockCode.toString() , quote: quote });
+//                     console.log({id: i, ticker: tickers[i].stockCode.toString(), quote: quote});
 //                 }
 //             });
 //         }
@@ -58,29 +62,57 @@ const wss = appWs(server);
 //     }
 // }, 29000);
 
-async function getCurrentQuote(ticker, callback) {
-    try {
-        let quote = {}
-        const queryOptions = { modules: ['price', 'summaryDetail'] }; // defaults
-        const quoteTicker = await yahooFinance.quoteSummary(ticker+'.SA', queryOptions);
-        console.log(quoteTicker);
-        if (quoteTicker !== undefined) {
-            quote.price = quoteTicker.price.regularMarketPrice;
-            // quote.price = quote.price + Math.random()
-            quote.open = quoteTicker.price.regularMarketOpen;
-            quote.high = quoteTicker.price.regularMarketDayHigh;
-            quote.low = quoteTicker.price.regularMarketDayLow;
-            quote.previousClose = quoteTicker.price.regularMarketPreviousClose;
-            quote.volume = quoteTicker.summaryDetail.averageVolume;
-            quote.marketChange = parseFloat(quoteTicker.price.regularMarketChangePercent*100).toPrecision(2);
-            quote.shortName = quoteTicker.price.shortName;
-            quote.longName = quoteTicker.price.longName;
-        }
+// async function getCurrentQuote(ticker, callback) {
+//     try {
 
-        callback(null, quote);
-    } catch (error) {
-        return error;
-    }
-};
+//       const options = {
+//         headers: {
+//           'Authorization': 'Bearer fS28BGD8uZPgqCS8vRfrwB'
+//         },
+//         method: 'GET',
+//         hostname: 'brapi.dev',
+//         path: url+ticker
+//       };
+
+//       const req = await https.request(options, (res) => {
+//         let data = '';
+       
+//         res.on('data', (chunk) => {
+//           data += chunk;
+//         });
+       
+//         res.on('end', () => {
+//           const jsonData = JSON.parse(data);
+//           const quoteTicker = jsonData.results[0];
+//           console.log(jsonData);
+
+//           let quote = {}
+
+//           console.log(quoteTicker);
+//           if (quoteTicker !== undefined) {
+//               quote.price = quoteTicker.regularMarketPrice;
+//               // quote.price = quote.price + Math.random()
+//               quote.open = quoteTicker.regularMarketOpen;
+//               quote.high = quoteTicker.regularMarketDayHigh;
+//               quote.low = quoteTicker.regularMarketDayLow;
+//               quote.previousClose = quoteTicker.regularMarketPreviousClose;
+//               quote.volume = quoteTicker.averageDailyVolume10Day;
+//               quote.marketChange = parseFloat(quoteTicker.regularMarketChangePercent*100).toPrecision(2);
+//               quote.shortName = quoteTicker.shortName;
+//               quote.longName = quoteTicker.longName;
+//           }
+  
+//           callback(null, quote);
+//         }).on('error', (err) => {
+//           console.error('Erro ao fazer requisição:', err);
+//         });
+//       });
+       
+//       req.end();
+      
+//     } catch (error) {
+//         return error;
+//     }
+// };
 module.exports = app;
 
