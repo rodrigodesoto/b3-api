@@ -23,9 +23,7 @@ module.exports = {
 
 async function authenticate({ email, password, ipAddress }) {
     const account = await db.Account.findOne({ email });
-    // console.log(!account)
-    // console.log(!account.isVerified)
-    // console.log(!bcrypt.compareSync(password, account.passwordHash))
+
     if (!account || !account.isVerified || !bcrypt.compareSync(password, account.passwordHash)) {
         throw 'Email ou senha está incorreto';
     }
