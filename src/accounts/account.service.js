@@ -23,9 +23,9 @@ module.exports = {
 
 async function authenticate({ email, password, ipAddress }) {
     const account = await db.Account.findOne({ email });
-    console.log(!account)
-    console.log(!account.isVerified)
-    console.log(!bcrypt.compareSync(password, account.passwordHash))
+    // console.log(!account)
+    // console.log(!account.isVerified)
+    // console.log(!bcrypt.compareSync(password, account.passwordHash))
     if (!account || !account.isVerified || !bcrypt.compareSync(password, account.passwordHash)) {
         throw 'Email ou senha está incorreto';
     }
@@ -246,8 +246,8 @@ function randomTokenString() {
 }
 
 function basicDetails(account) {
-    const { id, title, firstName, lastName, email, role, created, updated, isVerified } = account;
-    return { id, title, firstName, lastName, email, role, created, updated, isVerified };
+    const { id, firstName, lastName, email, role, created, updated, isVerified } = account;
+    return { id, firstName, lastName, email, role, created, updated, isVerified };
 }
 
 async function sendVerificationEmail(account, origin) {
