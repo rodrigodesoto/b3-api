@@ -1,6 +1,3 @@
-# Variáveis de ambiente
-.env
-
 # Logs
 logs
 *.log
