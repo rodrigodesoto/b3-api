@@ -1,5 +1,6 @@
 ﻿require('rootpath')();
 require('dotenv').config();
+require('express-async-errors');
 const express = require('express');
 const appWs = require('./server-ws');
 const bodyParser = require('body-parser');
@@ -52,7 +53,7 @@ app.get('/teste2', (req, res, next) => {
         throw new Error('teste2 deu erro');
     } catch (error) {
         console.log(error);
-        res.sendStatus(500);
+        res.status(500).json({ message: error.message });
     }
 })
  
