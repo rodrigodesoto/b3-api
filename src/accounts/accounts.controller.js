@@ -32,14 +32,20 @@ function authenticateSchema(req, res, next) {
 }
 
 function authenticate(req, res, next) {
-    const { email, password } = req.body;
-    const ipAddress = req.ip;
-    accountService.authenticate({ email, password, ipAddress })
-        .then(({ refreshToken, ...account }) => {
-            setTokenCookie(res, refreshToken);
-            res.json(account);
-        })
-        .catch(next);
+
+    try {
+        const { email, password } = req.body;
+        const ipAddress = req.ip;
+        accountService.authenticate({ email, password, ipAddress })
+            .then(({ refreshToken, ...account }) => {
+                setTokenCookie(res, refreshToken);
+                res.json(account);
+            })
+            .catch(next);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
 }
 
 function refreshToken(req, res, next) {
