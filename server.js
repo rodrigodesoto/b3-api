@@ -28,10 +28,10 @@ app.post('/login', (req, res, next) => {
 // allow cors requests from any origin and with credentials
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 
-app.use((req, res, next) => {
-    // res.header('Access-Control-Allow-Origin', '*');
-    next();
-  });
+app.use((error, req, res, next) => {
+    console.log('error middleware');
+    res.sendStatus(500);
+})
 
 // api rotas
 app.use('/accounts', require('./src/accounts/accounts.controller'));
@@ -41,6 +41,23 @@ app.use('/stocks', require('./src/stock/stock.controller'));
 
 const server = app.listen(process.env.PORT, () => {
     console.log('WebSocket is running on port ' + process.env.PORT);
+})
+
+app.get('/teste1', (req, res, next) => {
+    res.send('teste1');
+})
+ 
+app.get('/teste2', (req, res, next) => {
+    try {
+        throw new Error('teste2 deu erro');
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+})
+ 
+app.get('/teste3', (req, res, next) => {
+    throw new Error('teste3 deu erro');
 })
 
 const wss = appWs(server);
