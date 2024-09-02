@@ -21,26 +21,32 @@ module.exports = {
     delete: _delete
 };
 
-async function authenticate({ email, password, ipAddress }) {
-    const account = await db.Account.findOne({ email });
+async function authenticate({ email, password, ipAddress, res }) {
 
-    if (!account || !account.isVerified || !bcrypt.compareSync(password, account.passwordHash)) {
-        throw new Error('Email ou senha está incorreto');
+    try {
+        const account = await db.Account.findOne({ email });
+
+        if (!account || !account.isVerified || !bcrypt.compareSync(password, account.passwordHash)) {
+            throw new Error('Email ou senha está incorreto');
+        }
+    
+        // authentication successful so generate jwt and refresh tokens
+        const jwtToken = generateJwtToken(account);
+        const refreshToken = generateRefreshToken(account, ipAddress);
+    
+        // save refresh token
+        await refreshToken.save();
+    
+        // return basic details and tokens
+        return {
+            ...basicDetails(account),
+            jwtToken,
+            refreshToken: refreshToken.token
+        };
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
     }
-
-    // authentication successful so generate jwt and refresh tokens
-    const jwtToken = generateJwtToken(account);
-    const refreshToken = generateRefreshToken(account, ipAddress);
-
-    // save refresh token
-    await refreshToken.save();
-
-    // return basic details and tokens
-    return {
-        ...basicDetails(account),
-        jwtToken,
-        refreshToken: refreshToken.token
-    };
 }
 
 async function refreshToken({ token, ipAddress }) {
