@@ -1,11 +1,12 @@
 ﻿{
-    "emailFrom": "info@b3-api.com",
+    "emailFrom": "rodrigodesoto@hotmail.com",
     "smtpOptions": {
-        "host": "smtp-relay.sendinblue.com",
+        "host": "smtp-relay.brevo.com",
         "port": 587,
+        "secure": false,
         "auth": {
-            "user": "rodrigodesoto@hotmail.com",
-            "pass": "h8PT5p9nJZbjqftI"
+            "user": "7b5722001@smtp-brevo.com",
+            "pass": "f6kTEYd9O7NswMJX"
         }
     }
 }

@@ -81,29 +81,38 @@ async function revokeToken({ token, ipAddress }) {
     await refreshToken.save();
 }
 
-async function register(params, origin) {
-    // validate
-    if (await db.Account.findOne({ email: params.email })) {
-        // send already registered error in email to prevent account enumeration
-        return await sendAlreadyRegisteredEmail(params.email, origin);
+async function register(params, origin, res) {
+
+    try {
+        // validate
+        if (await db.Account.findOne({ email: params.email })) {
+            // send already registered error in email to prevent account enumeration
+            await sendAlreadyRegisteredEmail(params.email, origin);
+
+            throw new Error('O email <strong>'+params.email+'</strong> já foi registrado.');
+        }
+
+        // create account object
+        const account = new db.Account(params);
+
+        // first registered account is an admin
+        const isFirstAccount = (await db.Account.countDocuments({})) === 0;
+        account.role = isFirstAccount ? Role.Admin : Role.User;
+        account.verificationToken = randomTokenString();
+
+        // hash password
+        account.passwordHash = hash(params.password);
+
+        // save account
+        await account.save();
+
+        // send email
+        await sendVerificationEmail(account, origin);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
     }
-
-    // create account object
-    const account = new db.Account(params);
-
-    // first registered account is an admin
-    const isFirstAccount = (await db.Account.countDocuments({})) === 0;
-    account.role = isFirstAccount ? Role.Admin : Role.User;
-    account.verificationToken = randomTokenString();
-
-    // hash password
-    account.passwordHash = hash(params.password);
-
-    // save account
-    await account.save();
-
-    // send email
-    await sendVerificationEmail(account, origin);
 }
 
 async function verifyEmail({ token }) {

@@ -90,7 +90,7 @@ function registerSchema(req, res, next) {
 }
 
 function register(req, res, next) {
-    accountService.register(req.body, req.get('origin'))
+    accountService.register(req.body, req.get('origin'), res)
         .then(() => res.json({ message: 'Registro bem-sucedido, verifique seu e-mail para obter instruções de verificação' }))
         .catch(next);
 }
