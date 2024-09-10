@@ -25,7 +25,9 @@ async function insertStock(stockBody){
         low: stockBody.low,
         marketChange: stockBody?.marketChange == undefined ? 0:stockBody?.marketChange,
         dtBuy: DateUtils.convertAnyToDate(stockBody.dtBuy),
-        dtUpdate: new Date()
+        dtUpdate: new Date(),
+        order: stockBody.order,
+        advfnCode: stockBody.advfnCode
     };
     try{
         await stockModel.create(stock);
@@ -76,7 +78,8 @@ async function getById(id) {
         dtBuy: DateUtils.dateToStringYear(stock.dtBuy),
         dtUpdate: stock.dtUpdate,
         order: stock.order,
-        advfnCode: stock.advfnCode
+        advfnCode: stock.advfnCode,
+        order: stock.order
     }
     return stockReturn;
 }
