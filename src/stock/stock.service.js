@@ -136,8 +136,8 @@ async function getAll() {
 }
 
 function basicDetails(stock) {
-    const { id, stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate, advfnCode, order} = stock;
-    return { id, stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate, advfnCode, order};
+    const { id, stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate, advfnCode, yahooCode, order} = stock;
+    return { id, stockCode, shortName, currentPrice, qtd, vlBuy, vlTotal, open, high, low, marketChange, dtBuy, dtUpdate, advfnCode, yahooCode, order};
 }
 
 

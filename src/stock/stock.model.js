@@ -21,6 +21,7 @@ const StockSchema = new Schema({
     vlYeld: { type: Number, required: false},
     prcYeld: { type: Number, required: false},
     advfnCode: { type: String, required: true, unique: true, upercase: false},
+    yahooCode: { type: String, required: false, unique: true, upercase: true },
     order: { type: Number, required: true, unique: true}
 });
 
