@@ -1,5 +1,6 @@
 ﻿const db = require('src/_helpers/db');
 const stockModel = require("./stock.model");
+const stocksVarModel = require("./stocks-var.model");
 const {DateUtils} = require("../util/date-utils");
 
 module.exports = {
@@ -8,6 +9,7 @@ module.exports = {
     updateStock,
     getById,
     insertStock,
+    insertStocksVar,
     delete: _delete
 };
 
@@ -133,6 +135,29 @@ async function getAll() {
     const stocksModel = stocks.map(x => basicDetails(x));
     const stockOrder = stocksModel.sort((a, b) => a.order - b.order);
     return stockOrder;
+}
+
+async function insertStocksVar(stockBody){
+    const stock = {
+        stockCode: stockBody.stockCode.toUpperCase(),
+        varDia: Number(stockBody.varDia.replace(',', '.')),
+        vlr: Number(stockBody.vlr.replace(',', '.')),
+        var12m: Number(stockBody.var12m.replace(',', '.')),
+        varAno: Number(stockBody.varAno.replace(',', '.')),
+        varSem: Number(stockBody.varSem.replace(',', '.')),
+        varMes: Number(stockBody.varMes.replace(',', '.')),
+        vlrMax: Number(stockBody.vlrMax.replace(',', '.')),
+        vlrMin: Number(stockBody.vlrMin.replace(',', '.')),
+        volume: stockBody.volume,
+        data: new Date(),
+        state: stockBody.state.toUpperCase()
+    };
+    try{
+        await stocksVarModel.create(stock);;
+        return stock;
+    } catch(err){
+        return err
+    }
 }
 
 function basicDetails(stock) {
