@@ -13,7 +13,7 @@ const nodeSchedule = require('node-schedule');
 const pageScraperInfoMoney = require('./src/scraper/pageScraperInfoMoney');
 const stockService = require('./src/stock/stock.service');
 
-const job = nodeSchedule.scheduleJob('02 00 * * MON-SAT', () => {
+const job = nodeSchedule.scheduleJob('02 22 * * MON-FRI', () => {
     schedule();
     console.log('Job executou em'+new Date());
     });
