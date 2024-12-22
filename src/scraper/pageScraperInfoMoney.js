@@ -60,17 +60,17 @@ const scraperObject = {
                 const cellsMax = Array.from(rowMax.querySelectorAll('td')).map(cell => cell.innerText.trim());
                 
                 const stockMax = {
-                    stockCode: cellsMax[0] || null,
-                    varDia: cellsMax[3] || null,
-                    vlr: cellsMax[2] || null,
-                    var12m: cellsMax[7] || null,
-                    varAno: cellsMax[6] || null,
-                    varSem: cellsMax[4] || null,
-                    varMes: cellsMax[5] || null,
-                    vlrMax: cellsMax[9] || null,
-                    vlrMin: cellsMax[8] || null,
-                    volume: cellsMax[10] || null,
-                    data: cellsMax[1] || null,
+                    stockCode: cellsMax[0] || '',
+                    varDia: cellsMax[3] || '',
+                    vlr: cellsMax[2] || '',
+                    var12m: cellsMax[7] || '',
+                    varAno: cellsMax[6] || '',
+                    varSem: cellsMax[4] || '',
+                    varMes: cellsMax[5] || '',
+                    vlrMax: cellsMax[9] || '',
+                    vlrMin: cellsMax[8] || '',
+                    volume: cellsMax[10] || '',
+                    data: cellsMax[1] || '',
                     state: 'MAX',
                 };
 
@@ -101,17 +101,17 @@ const scraperObject = {
             const cellsMin = Array.from(rowMin.querySelectorAll('td')).map(cell => cell.innerText.trim());
             
             const stockMin = {
-                stockCode: cellsMin[0] || null,
-                varDia: cellsMin[3] || null,
-                vlr: cellsMin[2] || null,
-                var12m: cellsMin[7] || null,
-                varAno: cellsMin[6] || null,
-                varSem: cellsMin[4] || null,
-                varMes: cellsMin[5] || null,
-                vlrMax: cellsMin[9] || null,
-                vlrMin: cellsMin[8] || null,
-                volume: cellsMin[10] || null,
-                data: cellsMin[1] || null,
+                stockCode: cellsMin[0] || '',
+                varDia: cellsMin[3] || '',
+                vlr: cellsMin[2] || '',
+                var12m: cellsMin[7] || '',
+                varAno: cellsMin[6] || '',
+                varSem: cellsMin[4] || '',
+                varMes: cellsMin[5] || '',
+                vlrMax: cellsMin[9] || '',
+                vlrMin: cellsMin[8] || '',
+                volume: cellsMin[10] || '',
+                data: cellsMin[1] || '',
                 state: 'MIN',
             };
 
