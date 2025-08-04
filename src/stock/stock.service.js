@@ -2,6 +2,8 @@
 const stockModel = require("./stock.model");
 const stocksVarModel = require("./stocks-var.model");
 const {DateUtils} = require("../util/date-utils");
+const simulationModel = require("./simulation.model");
+const StockSimulationModel = require('./stocks_simulation.model');
 
 module.exports = {
     getAll,
@@ -10,6 +12,7 @@ module.exports = {
     getById,
     insertStock,
     insertStocksVar,
+    insertSimulation,
     delete: _delete
 };
 
@@ -155,6 +158,34 @@ async function insertStocksVar(stockBody){
     try{
         await stocksVarModel.create(stock);;
         return stock;
+    } catch(err){
+        return err
+    }
+}
+
+async function insertSimulation(simulationBody){
+
+    try{
+    // 1. Inserir os objetos de stocks_simulation um por um e coletar os _id
+    const stocksSimulationIds = [];
+
+    for (const stock of simulationBody.stocks_simulation) {
+        const result = await StockSimulationModel.create(stock);
+        stocksSimulationIds.push(result._id);
+    }
+
+    const simulation = {
+        nome: simulationBody.nome.toUpperCase(),
+        data_atualizacao: new Date(),
+        data_simulacao: new Date(),
+        valor_simulado: Number(simulationBody.valor_simulado),
+        vlr_atual: simulationBody.vlr_atual == null ? valor_simulado : Number(simulationBody.vlr_atual),
+        percent_lucro: simulationBody.percent_lucro == null ? Number(0) : Number(simulationBody.percent_lucro),
+        lucro: simulationBody.lucro == null ? Number(0) : Number(simulationBody.lucro),
+        stocks_simulation: stocksSimulationIds
+    };
+        await simulationModel.create(simulation);
+        return simulation;
     } catch(err){
         return err
     }
