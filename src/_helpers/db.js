@@ -8,6 +8,7 @@ module.exports = {
     RefreshToken: require('src/accounts/refresh-token.model'),
     Stock: require('src/stock/stock.model'),
     StocksVar: require('src/stock/stocks-var.model'),
+    Simulations: require("src/simulation/simulation.model"),
     isValidId
 };
 

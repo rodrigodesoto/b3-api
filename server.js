@@ -43,6 +43,9 @@ app.use('/accounts', require('./src/accounts/accounts.controller'));
 // api cotações
 app.use('/stocks', require('./src/stock/stock.controller'));
 
+// api simulação
+app.use('/simulations', require('./src/simulation/simulation.controller'));
+
 const server = app.listen(process.env.PORT, () => {
     console.log('WebServer is running on port ' + process.env.PORT);
 })

@@ -2,8 +2,8 @@
 const stockModel = require("./stock.model");
 const stocksVarModel = require("./stocks-var.model");
 const {DateUtils} = require("../util/date-utils");
-const simulationModel = require("./simulation.model");
-const StockSimulationModel = require('./stocks_simulation.model');
+const simulationModel = require("../simulation/simulation.model");
+const StockSimulationModel = require('../simulation/stocks_simulation.model');
 
 module.exports = {
     getAll,
