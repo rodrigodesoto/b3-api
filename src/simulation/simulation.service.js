@@ -15,13 +15,19 @@ async function getById(id) {
     return simulacao;
 }
 
-async function _delete(id) {
-    const simulacao = await getById(id);
+async function _delete(req, res, next) {
+    try{
+        const simulacao = await getById(req.params.id);
 
-    for (const idSimulation of simulacao.stocks_simulation) {
-        await StockSimulationModel.deleteMany(StockSimulationModel.findById(idSimulation))
+        if (!simulacao) throw 'Simulação não encontrada!';
+
+        for (const idSimulation of simulacao.stocks_simulation) {
+            await StockSimulationModel.deleteMany(StockSimulationModel.findById(idSimulation))
+        }
+        await simulacao.remove();
+	}catch(err){
+        return res.status(500).json({ message: err });
     }
-    await simulacao.remove();
 }
 
 async function getAll() {

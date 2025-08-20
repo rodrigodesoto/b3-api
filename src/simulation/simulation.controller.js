@@ -22,7 +22,7 @@ function getById(req, res, next) {
 }
 
 function _delete(req, res, next) {
-    simulationService.delete(req.params.id)
+    simulationService.delete(req, res, next)
         .then(() => res.json({ message: 'Simulação excluída com sucesso!' }))
         .catch(next);
 }
