@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const authorize = require('src/_middleware/authorize')
 const simulationService = require('./simulation.service');
+const refreshSimulation = require('./refreshSimulations');
 
 
 router.post('/insertSimulatiom', authorize(), insertSimulation);
+router.get('/refreshSimulations', authorize(), refreshSimulations);
 router.get('/getAllSimulations', authorize(), getAllSimulations);
 router.get('/:id', authorize(), getById);
 router.delete('/:id', authorize(), _delete);
@@ -39,6 +41,17 @@ async function insertSimulation(req, res, next) {
             }
             return res.status(201).
             send({message: simulationBody.nome.toString() + ' salvo com sucesso!'});
+
+    }catch(err){
+        return res.status(500).send({ error: err.message});
+    }
+};
+
+async function refreshSimulations(req, res, next) {
+    try{
+        await refreshSimulation.refreshSimulations();
+        return res.status(201).
+        send({message: 'Refresh das Simulações executado com sucesso!'});
 
     }catch(err){
         return res.status(500).send({ error: err.message});

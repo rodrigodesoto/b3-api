@@ -8,12 +8,13 @@ const StocksSimulationSchema = new Schema({
     lucro: { type: Number, required: false},
     preco_atual: { type: Number, required: true},
     preco_compra: { type: Number, required: true},
-    proporcao_percent: { type: Number, required: true}, 
     qtd: { type: Number, required: true},
     valor_atual: { type: Number, required: true},
     valor_simulado: { type: Number, required: true},
-    variacao_percent: { type: Number, required: true},
-    dt_compra: { type: Date, default: Date.now, required: true},
+    montante_percent: { type: Number, required: true},
+    lucro_percent: { type: Number, required: true}, 
+    data_compra: { type: Date, default: Date.now, required: true},
+    data_atualizacao: { type: Date, default: Date.now, required: true},
 });
 
 

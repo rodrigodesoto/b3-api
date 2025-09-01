@@ -12,6 +12,7 @@ const SimulationSchema = new Schema({
     percent_lucro: { type: Number, required: false}, 
     lucro: { type: Number, required: false},
     stocks_simulation: [{ type: ObjectID, required: true}],
+    qtd_dias: { type: Number, default: 0, required: false},
 });
 
 
