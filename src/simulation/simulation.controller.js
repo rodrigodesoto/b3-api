@@ -5,8 +5,8 @@ const simulationService = require('./simulation.service');
 const refreshSimulation = require('./refreshSimulations');
 
 
-router.post('/insertSimulatiom', authorize(), insertSimulation);
-router.get('/refreshSimulations', authorize(), refreshSimulations);
+router.post('/insertSimulation', authorize(), insertSimulation);
+router.get('/refreshSimulation/:nome', authorize(), refreshSimulations);
 router.get('/getAllSimulations', authorize(), getAllSimulations);
 router.get('/:id', authorize(), getById);
 router.delete('/:id', authorize(), _delete);
@@ -49,7 +49,7 @@ async function insertSimulation(req, res, next) {
 
 async function refreshSimulations(req, res, next) {
     try{
-        await refreshSimulation.refreshSimulations();
+        await refreshSimulation.refreshSimulations(req, res);
         return res.status(201).
         send({message: 'Refresh das Simulações executado com sucesso!'});
 

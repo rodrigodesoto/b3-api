@@ -7,13 +7,21 @@ module.exports = {
     refreshSimulations
 };
 
-async function refreshSimulations() {
+async function refreshSimulations(req, res) {
+
+  var simulations 
 
   try {
 
-    const simulations = await simulationModel.find({}).lean();
-    // const stocks = await stockSimulationModel.findById('687d56c84d4e71c3a1be668c');
+    if (req.params.nome == 'all') {
+      simulations = await simulationModel.find({}).lean();
+    } else {
+      simulations = await simulationModel.find({nome: req.params.nome});
+    }
 
+    if (simulations.length == 0) {
+      return res.status(204).json({ message: 'Simulação não localizada!' });
+    }
     for (const simulation of simulations) {
 
           let valorAtualSimulation = 0;
