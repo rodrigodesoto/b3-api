@@ -1,134 +1,173 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
+puppeteer.use(StealthPlugin());
 
 const scraperObject = {
-    async scraper() {
-        // Iniciar o navegador e abrir uma nova página
-        const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox','--disable-setuid-sandbox','--disable-popup-blocking',
-            '--disable-notifications',] });
-        const page = await browser.newPage();
+  async scraper() {
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-blink-features=AutomationControlled',
+        '--disable-notifications',
+      ],
+    });
 
-        browser.on('targetcreated', async (target) => {
-            const newPage = await target.page();
-            if (newPage) {
-                const url = await newPage.url();
-                console.log('Popup detectado:', url);
-        
-                // Fechar popups relacionados à publicidade
-                if (url.includes('google') || url.includes('ad')) {
-                    await newPage.close();
-                    console.log('Popup Publicidade fechado:', url);
-                }
-            }
-        });
+    const page = await browser.newPage();
 
-        await page.setRequestInterception(true);
-        page.on('request', (request) => {
-            const blockList = ['ads', 'google', 'doubleclick', 'marketing', 'adservice'];
-            if (blockList.some((resource) => request.url().includes(resource))) {
-                console.log('Recurso bloqueado:', request.url());
-                request.abort();
-            } else {
-                request.continue();
-            }
-        });
+    // Definir user-agent falso para evitar bloqueio
+    await page.setUserAgent(
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    );
 
-        try {
-            let arrTickets = [];
+    try {
+      await page.goto('https://www.infomoney.com.br/ferramentas/altas-e-baixas/', {
+        waitUntil: 'domcontentloaded',
+        timeout: 120000,
+      });
 
-            // Navegar até a página alvo
-            await page.goto('https://www.infomoney.com.br/ferramentas/altas-e-baixas/', {
-                waitUntil: 'networkidle2',
-            });
+      // ===== PRIMEIRA TENTATIVA: Scraping direto do DOM =====
+      try {
+        await page.waitForSelector('#altas_e_baixas tbody tr', { timeout: 15000 });
+        await page.waitForTimeout(3000);
 
-            // Esperar que o primeiro elemento da tabela seja carregado e que o texto não seja "Carregando..."
-            await page.waitForFunction(() => {
-                const firstCell = document.querySelector('tbody tr td');
-                return firstCell && firstCell.innerText.trim() !== 'Carregando...';
-            }, { timeout: 30000 });
+        const result = await page.evaluate(() => {
+          const rows = Array.from(document.querySelectorAll('#altas_e_baixas tbody tr'));
+          if (!rows.length) return null;
 
-            // Capturar os valores desejados
-            const dataMax = await page.evaluate(() => {
+          function parsePercent(str) {
+            if (!str) return NaN;
+            const cleaned = String(str).replace('%', '').replace(/\s/g, '').replace(',', '.');
+            return parseFloat(cleaned.replace(/[^\d\.\-+]/g, ''));
+          }
 
-                // Seleciona o primeiro <tr> dentro do <tbody>
-                const rowMax = document.querySelector('tbody tr');
-                
-                // Verifica se encontrou a linha, se não, retorna null
-                if (!rowMax) return null;
-                
-                // Extrai o texto de cada célula (coluna) na linha
-                const cellsMax = Array.from(rowMax.querySelectorAll('td')).map(cell => cell.innerText.trim());
-                
-                const stockMax = {
-                    stockCode: cellsMax[0] || '',
-                    varDia: cellsMax[3] || '',
-                    vlr: cellsMax[2] || '',
-                    var12m: cellsMax[7] || '',
-                    varAno: cellsMax[6] || '',
-                    varSem: cellsMax[4] || '',
-                    varMes: cellsMax[5] || '',
-                    vlrMax: cellsMax[9] || '',
-                    vlrMin: cellsMax[8] || '',
-                    volume: cellsMax[10] || '',
-                    data: cellsMax[1] || '',
-                    state: 'MAX',
-                };
-
-                return stockMax;
-            });
-            arrTickets.push(dataMax);
-
-            // Ordenar "Var Dia (%)"
-            const headerSelector = '#altas_e_baixas > thead > tr > th.sorting_desc';
-            await page.waitForSelector(headerSelector, { timeout: 60000 });
-
-            // Simular interação para garantir ordenação
-            await page.hover(headerSelector); // Passar o mouse sobre o cabeçalho
-            await page.click(headerSelector); // Primeiro clique
-            await page.waitForTimeout(2000);  // Esperar a tabela recarregar
-
-            // Capturar os valores desejados
-            const dataMin = await page.evaluate(() => {
-
-                // const dataMin = page.evaluate(() => {
-            // // Seleciona o primeiro <tr> dentro do <tbody>
-            const rowMin = document.querySelector('tbody tr');
-            
-            // Verifica se encontrou a linha, se não, retorna null
-            if (!rowMin) return null;
-            
-            // Extrai o texto de cada célula (coluna) na linha
-            const cellsMin = Array.from(rowMin.querySelectorAll('td')).map(cell => cell.innerText.trim());
-            
-            const stockMin = {
-                stockCode: cellsMin[0] || '',
-                varDia: cellsMin[3] || '',
-                vlr: cellsMin[2] || '',
-                var12m: cellsMin[7] || '',
-                varAno: cellsMin[6] || '',
-                varSem: cellsMin[4] || '',
-                varMes: cellsMin[5] || '',
-                vlrMax: cellsMin[9] || '',
-                vlrMin: cellsMin[8] || '',
-                volume: cellsMin[10] || '',
-                data: cellsMin[1] || '',
-                state: 'MIN',
+          const objects = rows.map((r) => {
+            const cells = Array.from(r.querySelectorAll('td')).map(c => c.innerText.trim());
+            return {
+              stockCode: cells[0] || '',
+              data: cells[1] || '',
+              vlr: cells[2] || '',
+              varDia: cells[3] || '',
+              varDiaNum: parsePercent(cells[3]),
+              varMes: cells[4] || '',
+              varAno: cells[5] || '',
+              var12m: cells[6] || '',
+              vlrMin: cells[7] || '',
+              vlrMax: cells[8] || '',
+              volume: cells[9] || '',
             };
+          }).filter(o => !Number.isNaN(o.varDiaNum));
 
-                return stockMin;
-            });
-            arrTickets.push(dataMin);
-            // await browser.close();
-            return arrTickets;
-        } catch (error) {
-            console.log(error);
-            return error;
-        } finally {
-            if (browser) {
-                await browser.close();
-            }
+          if (!objects.length) return null;
+
+          let max = objects[0], min = objects[0];
+          objects.forEach((o) => {
+            if (o.varDiaNum > max.varDiaNum) max = o;
+            if (o.varDiaNum < min.varDiaNum) min = o;
+          });
+
+          const format = (o, state) => ({
+            stockCode: o.stockCode,
+            varDia: o.varDia,
+            vlr: o.vlr,
+            var12m: o.var12m,
+            varAno: o.varAno,
+            varMes: o.varMes,
+            vlrMax: o.vlrMax,
+            vlrMin: o.vlrMin,
+            volume: o.volume,
+            data: o.data,
+            state,
+          });
+
+          return [format(max, 'MAX'), format(min, 'MIN')];
+        });
+
+        if (result) {
+          await browser.close();
+          return result;
         }
+      } catch (domError) {
+        console.warn('⚠️ Falha no DOM scraping, tentando XHR fallback...');
+      }
+
+      // ===== SEGUNDA TENTATIVA: Buscar via XHR (API JSON do DataTables) =====
+      const client = await page.target().createCDPSession();
+      await client.send('Network.enable');
+
+      let apiData = null;
+      client.on('Network.responseReceived', async (params) => {
+        const { response } = params;
+        if (response.url.includes('/altas-e-baixas/')) {
+          try {
+            const body = await client.send('Network.getResponseBody', { requestId: params.requestId });
+            if (body && body.body) {
+              apiData = JSON.parse(body.body);
+            }
+          } catch (_) {}
+        }
+      });
+
+      // Recarregar para capturar XHR
+      await page.reload({ waitUntil: 'networkidle2', timeout: 60000 });
+      await page.waitForTimeout(5000);
+
+      if (apiData && apiData.data && apiData.data.length) {
+        const rows = apiData.data.map((cells) => ({
+          stockCode: cells[0] || '',
+          data: cells[1] || '',
+          vlr: cells[2] || '',
+          varDia: cells[3] || '',
+          varDiaNum: parseFloat(String(cells[3]).replace('%', '').replace(',', '.')),
+          varMes: cells[4] || '',
+          varAno: cells[5] || '',
+          var12m: cells[6] || '',
+          vlrMin: cells[7] || '',
+          vlrMax: cells[8] || '',
+          volume: cells[9] || '',
+        }));
+
+        let max = rows[0], min = rows[0];
+        rows.forEach((o) => {
+          if (o.varDiaNum > max.varDiaNum) max = o;
+          if (o.varDiaNum < min.varDiaNum) min = o;
+        });
+
+        const format = (o, state) => ({
+          stockCode: o.stockCode,
+          varDia: o.varDia,
+          vlr: o.vlr,
+          var12m: o.var12m,
+          varAno: o.varAno,
+          varMes: o.varMes,
+          vlrMax: o.vlrMax,
+          vlrMin: o.vlrMin,
+          volume: o.volume,
+          data: o.data,
+          state,
+        });
+
+        await browser.close();
+        return [format(max, 'MAX'), format(min, 'MIN')];
+      }
+
+      // Se falhar tudo:
+      await browser.close();
+      return [
+        { stockCode: 'Falha scraping', state: 'MAX' },
+        { stockCode: 'Falha scraping', state: 'MIN' },
+      ];
+    } catch (err) {
+      console.error('Erro no scraper:', err);
+      await browser.close();
+      return [
+        { stockCode: 'Erro', state: 'MAX' },
+        { stockCode: 'Erro', state: 'MIN' },
+      ];
     }
-}
+  },
+};
 
 module.exports = scraperObject;

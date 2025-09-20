@@ -143,12 +143,11 @@ async function getAll() {
 async function insertStocksVar(stockBody){
     const stock = {
         stockCode: stockBody.stockCode.toUpperCase(),
-        varDia: Number(stockBody.varDia.replace(',', '.')),
+        varDia: Number(stockBody.varDia.replace('%', '').replace(',', '.')),
         vlr: Number(stockBody.vlr.replace(',', '.')),
-        var12m: Number(stockBody.var12m.replace(',', '.')),
-        varAno: Number(stockBody.varAno.replace(',', '.')),
-        varSem: Number(stockBody.varSem.replace(',', '.')),
-        varMes: Number(stockBody.varMes.replace(',', '.')),
+        var12m: Number(stockBody.var12m.replace('%', '').replace(',', '.')),
+        varAno: Number(stockBody.varAno.replace('%', '').replace(',', '.')),
+        varMes: Number(stockBody.varMes.replace('%', '').replace(',', '.')),
         vlrMax: Number(stockBody.vlrMax.replace(',', '.')),
         vlrMin: Number(stockBody.vlrMin.replace(',', '.')),
         volume: stockBody.volume,

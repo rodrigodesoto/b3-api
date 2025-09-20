@@ -7,7 +7,7 @@ const StocksVarSchema = new Schema({
     vlr: { type: Number, required: true},
     var12m: { type: Number, required: true}, 
     varAno: { type: Number, required: true},
-    varSem: { type: Number, required: true},
+    varSem: { type: Number, required: false},
     varMes: { type: Number, required: true},
     vlrMax: { type: Number, required: true},
     vlrMin: { type: Number, required: true},
