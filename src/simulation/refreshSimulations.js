@@ -2,6 +2,8 @@ const dayjs = require("dayjs");
 const {default: yahooFinance} = require("yahoo-finance2");
 const simulationModel = require("../simulation/simulation.model");
 const stockSimulationModel = require('../simulation/stocks_simulation.model');
+const simulationHistoric = require("../simulation/simulation_historic.model");
+
 
 module.exports = {
     refreshSimulations
@@ -9,7 +11,7 @@ module.exports = {
 
 async function refreshSimulations(req, res) {
 
-  var simulations 
+  let simulations 
 
   try {
 
@@ -22,6 +24,7 @@ async function refreshSimulations(req, res) {
     if (simulations.length == 0) {
       return res.status(204).json({ message: 'Simulação não localizada!' });
     }
+
     for (const simulation of simulations) {
 
           let valorAtualSimulation = 0;
@@ -39,6 +42,7 @@ async function refreshSimulations(req, res) {
           const queryOptions = { modules: ['price', 'summaryDetail'] }; // defaults
           const quoteTicker = await yahooFinance.quoteSummary(stock.codigo+'.SA', queryOptions);
           console.log(quoteTicker);
+
           if (quoteTicker !== undefined) {
               quote.price = quoteTicker.price.regularMarketPrice;
               // quote.price = quote.price + Math.random()
@@ -88,18 +92,37 @@ async function refreshSimulations(req, res) {
           const dataSimulacao = dayjs(simulation.data_simulacao);
           const dias = dayjs().diff(dataSimulacao, "day");
 
-          await simulationModel.updateOne(
-            { _id: simulation._id },
-            { $set: { qtd_dias: dias,
+        await simulationModel.updateOne(
+          { _id: simulation._id },
+          {
+            $set: {
+              qtd_dias: dias,
               data_atualizacao: new Date(),
               vlr_atual: valorAtualSimulation.toFixed(2),
               lucro: lucroSimulation.toFixed(2),
               percent_lucro: lucroPercentSimulation.toFixed(2),
-              } },
+            },
+          }
+        );
 
-          );
+        // Salva snapshot no histórico (nova collection)
+        await simulationHistoric.create({
+          nome: simulation.nome,
+          descricao: simulation.descricao,
+          valor_simulado: simulation.valor_simulado,
+          vlr_atual: valorAtualSimulation.toFixed(2),
+          lucro: lucroSimulation.toFixed(2),
+          percent_lucro: lucroPercentSimulation.toFixed(2),
+          qtd_dias: dias,
+          data_simulacao: simulation.data_simulacao,
+          data_atualizacao: new Date(),
+          stocks_simulation: simulation.stocks_simulation,
+        });
+
+        console.log(
+          `Snapshot salvo em simulations_historic para: ${simulation.nome}`
+        );
         }
-
     }
 
   } catch (err) {
