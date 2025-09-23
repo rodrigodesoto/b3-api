@@ -15,7 +15,7 @@ async function refreshSimulations(req, res) {
 
   try {
 
-    if (req.params.nome == 'all') {
+    if (req == null || req.params.nome == 'all') {
       simulations = await simulationModel.find({}).lean();
     } else {
       simulations = await simulationModel.find({nome: req.params.nome});

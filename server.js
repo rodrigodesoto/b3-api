@@ -12,10 +12,16 @@ const swaggerUi = require('swagger-ui-express');
 const nodeSchedule = require('node-schedule');
 const pageScraperInfoMoney = require('./src/scraper/pageScraperInfoMoney');
 const stockService = require('./src/stock/stock.service');
+const refreshSimulations = require('./src/simulation/refreshSimulations');
 
-const job = nodeSchedule.scheduleJob('02 22 * * MON-FRI', () => {
-    schedule();
-    console.log('Job executou em'+new Date());
+const jobStocksVar = nodeSchedule.scheduleJob('02 22 * * MON-FRI', () => {
+    scheduleStocksVar();
+    console.log('jobStocksVar executou em'+new Date());
+    });
+
+const jobRefreshSimulation = nodeSchedule.scheduleJob('15 22 * * MON-FRI', () => {
+    scheduleRefreshSimulation();
+    console.log('jobRefreshSimulation executou em'+new Date());
     });
 
 const app = express();
@@ -67,7 +73,7 @@ const server = app.listen(process.env.PORT, () => {
 //     throw new Error('teste3 deu erro');
 // })
 
-async function schedule() {
+async function scheduleStocksVar() {
 
     try {   
         const arrStock = await pageScraperInfoMoney.scraper();
@@ -81,8 +87,18 @@ async function schedule() {
     }
 };
 
+async function scheduleRefreshSimulation() {
+
+    try {   
+        await refreshSimulations.refreshSimulations(null, null);
+    } catch (error) {
+        console.log(error.stack);
+        return error;
+    }
+};
+
 // setInterval(async () => {
-    //  schedule();
+    //  scheduleRefreshSimulation();
 // }, 60000);
 
 module.exports = app;
