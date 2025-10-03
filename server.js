@@ -19,7 +19,7 @@ const jobStocksVar = nodeSchedule.scheduleJob('02 22 * * MON-FRI', () => {
     console.log('jobStocksVar executou em'+new Date());
     });
 
-const jobRefreshSimulation = nodeSchedule.scheduleJob('15 22 * * MON-FRI', () => {
+const jobRefreshSimulation = nodeSchedule.scheduleJob('15 22 * * 1,3,5', () => {
     scheduleRefreshSimulation();
     console.log('jobRefreshSimulation executou em'+new Date());
     });
