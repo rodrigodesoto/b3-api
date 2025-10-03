@@ -3,6 +3,7 @@ const {default: yahooFinance} = require("yahoo-finance2");
 const simulationModel = require("../simulation/simulation.model");
 const stockSimulationModel = require('../simulation/stocks_simulation.model');
 const simulationHistoric = require("../simulation/simulation_historic.model");
+const stockSimulationHistoricModel = require('../simulation/stocks_simulation_historic.model');
 
 
 module.exports = {
@@ -81,6 +82,23 @@ async function refreshSimulations(req, res) {
               },
             }
           );
+
+           // Salva snapshot no histórico (nova collection)
+           await stockSimulationHistoricModel.create({
+                qtd_dias: diasCompra, 
+                codigo: stock.codigo,
+                kelly_continuo: stock.kelly_continuo,
+                lucro: lucroStock.toFixed(2),
+                preco_atual: quote.price,
+                preco_compra: stock.preco_compra,
+                qtd: stock.qtd,
+                valor_atual: valorAtualStock.toFixed(2),
+                valor_simulado: stock.valor_simulado,
+                montante_percent: montantePercent.toFixed(2),
+                lucro_percent: lucroPercentStock.toFixed(2),
+                data_compra: stock.data_compra,
+                data_atualizacao: new Date(),
+           });
 
           console.log(`Atualizado: ${stock.codigo} - Preço: ${quote.price}`);
         }
