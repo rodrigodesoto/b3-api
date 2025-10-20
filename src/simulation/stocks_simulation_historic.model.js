@@ -15,6 +15,7 @@ const StocksSimulationHistoricSchema = new mongoose.Schema(
     lucro_percent: { type: Number, required: true}, 
     data_compra: { type: Date, default: Date.now, required: true},
     data_atualizacao: { type: Date, default: Date.now, required: true},
+    simulation_name: {type: String, required: false},
   },
     {
     timestamps: false, // cria createdAt e updatedAt automáticos

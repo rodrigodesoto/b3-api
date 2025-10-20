@@ -79,6 +79,7 @@ async function refreshSimulations(req, res) {
                 lucro_percent: lucroPercentStock.toFixed(2),
                 montante_percent: montantePercent.toFixed(2),
                 data_atualizacao: new Date(),
+                simulation_name: simulation.nome,
               },
             }
           );
@@ -98,6 +99,7 @@ async function refreshSimulations(req, res) {
                 lucro_percent: lucroPercentStock.toFixed(2),
                 data_compra: stock.data_compra,
                 data_atualizacao: new Date(),
+                simulation_name: simulation.nome,
            });
 
           console.log(`Atualizado: ${stock.codigo} - Preço: ${quote.price}`);
