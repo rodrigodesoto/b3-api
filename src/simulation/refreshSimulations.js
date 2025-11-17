@@ -41,10 +41,17 @@ async function refreshSimulations(req, res) {
             
           let quote = {}
           const queryOptions = { modules: ['price', 'summaryDetail'] }; // defaults
-          const quoteTicker = await yahooFinance.quoteSummary(stock.codigo+'.SA', queryOptions);
-          console.log(quoteTicker);
 
-          if (quoteTicker !== undefined) {
+          let quoteTicker = null;
+
+          try {
+            quoteTicker = await yahooFinance.quoteSummary(stock.codigo+'.SA', queryOptions);
+          } catch (err) {
+            console.error("Erro na API yahooFinance para a ação "+stock.codigo, err);
+            continue;
+          }
+
+          if (quoteTicker !== null && quoteTicker !== undefined) {
               quote.price = quoteTicker.price.regularMarketPrice;
               // quote.price = quote.price + Math.random()
               quote.open = quoteTicker.price.regularMarketOpen;
