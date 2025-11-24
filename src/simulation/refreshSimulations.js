@@ -58,7 +58,7 @@ async function refreshSimulations(req, res) {
               quote.high = quoteTicker.price.regularMarketDayHigh;
               quote.low = quoteTicker.price.regularMarketDayLow;
               quote.previousClose = quoteTicker.price.regularMarketPreviousClose;
-              quote.volume = quoteTicker.summaryDetail.averageVolume;
+              quote.volume = quoteTicker.summaryDetail == undefined?0:quoteTicker.summaryDetail.averageVolume;
               quote.marketChange = parseFloat(quoteTicker.price.regularMarketChangePercent*100).toPrecision(2);
               quote.shortName = quoteTicker.price.shortName;
               quote.longName = quoteTicker.price.longName;
