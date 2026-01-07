@@ -1,5 +1,5 @@
 const dayjs = require("dayjs");
-const {default: YahooFinance} = require("yahoo-finance2");
+const YahooFinance = require("yahoo-finance2").default;
 const simulationModel = require("../simulation/simulation.model");
 const stockSimulationModel = require('../simulation/stocks_simulation.model');
 const simulationHistoric = require("../simulation/simulation_historic.model");
