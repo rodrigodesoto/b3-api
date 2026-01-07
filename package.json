@@ -13,7 +13,6 @@
     "swagger-autogen": "node ./src/_helpers/swagger.js"
   },
   "dependencies": {
-    "b3-api": "file:",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
@@ -34,7 +33,6 @@
     "node-fetch": "^2.6.7",
     "node-schedule": "^2.1.1",
     "nodemailer": "^6.4.6",
-    "npm": "^11.5.2",
     "puppeteer": "^18.1.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
@@ -47,8 +45,7 @@
     "yahoo-finance2": "^3.11.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.3",
-    "yahoo-finance2": "^3.11.2"
+    "nodemon": "^2.0.3"
   },
   "bugs": {
     "url": "https://github.com/rodrigodesoto/b3-api/issues"
