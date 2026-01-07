@@ -5,6 +5,14 @@ const stockSimulationModel = require('../simulation/stocks_simulation.model');
 const simulationHistoric = require("../simulation/simulation_historic.model");
 const stockSimulationHistoricModel = require('../simulation/stocks_simulation_historic.model');
 
+const yahooFinance = new YahooFinance({
+  fetchOptions: {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+    },
+  },
+});
 
 module.exports = {
     refreshSimulations
@@ -27,8 +35,6 @@ async function refreshSimulations(req, res) {
     }
 
     for (const simulation of simulations) {
-
-          const yahooFinance = new YahooFinance();    
 
           let valorAtualSimulation = 0;
           let lucroSimulation = 0;
