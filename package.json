@@ -43,12 +43,11 @@
     "swagger-autogen": "^2.21.5",
     "swagger-ui-express": "^4.5.0",
     "ws": "^8.11.0",
-    "yahoo-finance2": "^2.14.2",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.3",
-    "yahoo-finance": "^0.3.7"
+    "yahoo-finance2": "^3.11.2"
   },
   "bugs": {
     "url": "https://github.com/rodrigodesoto/b3-api/issues"
