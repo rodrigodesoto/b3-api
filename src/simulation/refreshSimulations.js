@@ -1,5 +1,5 @@
 const dayjs = require("dayjs");
-const {default: yahooFinance} = require("yahoo-finance2");
+const {default: YahooFinance} = require("yahoo-finance2");
 const simulationModel = require("../simulation/simulation.model");
 const stockSimulationModel = require('../simulation/stocks_simulation.model');
 const simulationHistoric = require("../simulation/simulation_historic.model");
@@ -28,6 +28,8 @@ async function refreshSimulations(req, res) {
 
     for (const simulation of simulations) {
 
+          const yahooFinance = new YahooFinance();    
+
           let valorAtualSimulation = 0;
           let lucroSimulation = 0;
           let lucroPercentSimulation = 0;
@@ -40,28 +42,26 @@ async function refreshSimulations(req, res) {
           if (!stock) continue;
             
           let quote = {}
-          const queryOptions = { modules: ['price', 'summaryDetail'] }; // defaults
-
           let quoteTicker = null;
 
           try {
-            quoteTicker = await yahooFinance.quoteSummary(stock.codigo+'.SA', queryOptions);
+            quoteTicker = await yahooFinance.quote(stock.codigo+'.SA');
           } catch (err) {
             console.error("Erro na API yahooFinance para a ação "+stock.codigo, err);
             continue;
           }
 
           if (quoteTicker !== null && quoteTicker !== undefined) {
-              quote.price = quoteTicker.price.regularMarketPrice;
+              quote.price = quoteTicker.regularMarketPrice;
               // quote.price = quote.price + Math.random()
-              quote.open = quoteTicker.price.regularMarketOpen;
-              quote.high = quoteTicker.price.regularMarketDayHigh;
-              quote.low = quoteTicker.price.regularMarketDayLow;
-              quote.previousClose = quoteTicker.price.regularMarketPreviousClose;
+              quote.open = quoteTicker.regularMarketOpen;
+              quote.high = quoteTicker.regularMarketDayHigh;
+              quote.low = quoteTicker.regularMarketDayLow;
+              quote.previousClose = quoteTicker.regularMarketPreviousClose;
               quote.volume = quoteTicker.summaryDetail == undefined?0:quoteTicker.summaryDetail.averageVolume;
-              quote.marketChange = parseFloat(quoteTicker.price.regularMarketChangePercent*100).toPrecision(2);
-              quote.shortName = quoteTicker.price.shortName;
-              quote.longName = quoteTicker.price.longName;
+              quote.marketChange = parseFloat(quoteTicker.regularMarketChangePercent).toPrecision(2);
+              quote.shortName = quoteTicker.shortName;
+              quote.longName = quoteTicker.longName;
           }
 
           if (!quote) continue;
