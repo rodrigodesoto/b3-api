@@ -75,7 +75,7 @@ async function refreshSimulations(req, res) {
               quote.longName = quoteTicker.longName;
           }
 
-          if (!quote) continue;
+          if (!quote || quoteTicker == null) continue;
 
           const dataCompra = dayjs(stock.data_compra);
           const diasCompra = dayjs().diff(dataCompra, "day");
