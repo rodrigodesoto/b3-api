@@ -13,6 +13,7 @@
     "swagger-autogen": "node ./src/_helpers/swagger.js"
   },
   "dependencies": {
+    "axios": "^1.13.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
@@ -41,8 +42,8 @@
     "swagger-autogen": "^2.21.5",
     "swagger-ui-express": "^4.5.0",
     "ws": "^8.11.0",
-    "yamljs": "^0.3.0",
-    "yahoo-finance2": "^3.11.2"
+    "yahoo-finance2": "^3.11.2",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"

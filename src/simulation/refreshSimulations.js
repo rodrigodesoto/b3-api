@@ -1,5 +1,6 @@
 const dayjs = require("dayjs");
 const YahooFinance = require("yahoo-finance2").default;
+const brApi = require("../brapi/brapi");
 const simulationModel = require("../simulation/simulation.model");
 const stockSimulationModel = require('../simulation/stocks_simulation.model');
 const simulationHistoric = require("../simulation/simulation_historic.model");
@@ -52,8 +53,12 @@ async function refreshSimulations(req, res) {
 
           try {
             quoteTicker = await yahooFinance.quote(stock.codigo+'.SA');
+
+            if (quoteTicker == null || quoteTicker == undefined) {
+            quoteTicker = await brApi.getQuoteFromBrapi(stock.codigo);
+            }
           } catch (err) {
-            console.error("Erro na API yahooFinance para a ação "+stock.codigo, err);
+            console.error("Erro na API yahooFinance e BrAPI para a ação "+stock.codigo, err);
             continue;
           }
 
